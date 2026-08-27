@@ -1,312 +1,196 @@
-# LuxeDrive — Luxury Car Rental Platform & Fleet Operations Dashboard
+# 🚗 Best Auto / LuxeDrive — Full-Stack Car Rental Platform & Fleet Operations Dashboard
 
 > **Technical Assessment Submission**: Web Designer/Developer + AI Automation  
-> **Current Project Stage**: Stage 3 (Production-Ready Full-Stack Implementation Complete)  
-> **Evaluation Date**: August 2026  
-> **Repository Architecture**: Single Next.js 16 App Router Monorepo (Customer Storefront + Executive Admin Suite + AI Concierge + Telegram Automation)  
-> **Live Demo Target**: `https://luxedrive-assessment.vercel.app`
+> **Repository Architecture**: Next.js 16 App Router (Customer Storefront + Executive Operations Dashboard)  
+> **Design Specifications**: Pixel-Perfect Figma Implementation (`node-id=1-4856`)  
+> **Tech Stack**: Next.js 16 (Turbopack, React 19), Tailwind CSS v4, TypeScript, Lucide Icons  
 
 ---
 
-## 📌 Executive Summary & Current Stage
+## 📌 Project Overview
 
-**LuxeDrive** is a production-grade luxury car rental platform and operations command center engineered with **Next.js 16 (App Router, Turbopack, React 19)**, **Tailwind CSS v4**, **shadcn/ui**, **Recharts**, **OpenAI Responses API**, and an automated **Telegram notification pipeline**.
-
-### 🚀 Current Stage: Stage 3 Complete (Full Delivery)
-- [x] **Stage 1 (Architecture & Design System)**: Complete directory structure, Route Groups `(customer)` and `admin`, Tailwind CSS v4 CSS-first design tokens in `app/globals.css`, shadcn/ui primitives, and TypeScript domain models in `lib/types.ts`.
-- [x] **Stage 2 (Interactive Portal & Analytics Dashboard)**: Dynamic mock data engine (`lib/mock-data.ts`), multi-filter vehicle catalog (`/vehicles`), dynamic vehicle detail pages (`/vehicles/[id]`), interactive date-range & pricing booking flow (`BookingModal.tsx`), and the Executive Admin Dashboard (`/admin`) with live KPI metrics, Recharts revenue & category graphs, dynamic date/category filters, fleet inventory management, bookings manifest, and leads CRM.
-- [x] **Stage 3 (AI Concierge & Automation Pipeline)**: Server-side OpenAI Responses API route handler (`/app/api/chat`) with domain-grounded rental policies and dynamic vehicle match cards, floating client chat widget (`ChatBotWidget.tsx`), and automated multi-channel lead dispatch (`/app/api/leads` + `lib/telegram.ts`) delivering instant reservation tickets via Telegram Bot API with development fallback simulation.
+This project is a modern, high-performance automotive web application combining a **pixel-perfect, high-converting customer landing page** and an **executive operations dashboard** built according to the Figma design specifications.
 
 ---
 
-## 🗂️ Complete Folder & Project Structure
+## 🌟 Key Accomplishments & Features Built So Far
 
-Below is the complete tree layout of the LuxeDrive repository with descriptions for every component and subsystem:
+### 1. 🎨 Pixel-Perfect Customer Storefront & Landing Page (`/`)
+
+#### A. **Navigation Header (`src/shared/Navbar.tsx`)**
+- **Aesthetic Tone**: Seamless `#CBD0D8` background flowing into the hero section.
+- **Navigation Links**: `Home`, `How it Work`, `Rental Details`, `Why Choose Us`, `Testimonial`, `| Register`.
+- **Interactive Authentication**: `Log In` button (`px-6 py-2.5 rounded-[4px] bg-white text-[#131825]`) with interactive `AuthModal` (supporting Login & Register flows, profile badge, and active session state).
+- **Direct Dashboard Access**: Integrated quick-navigation link to the executive admin dashboard.
+
+#### B. **Hero Section (`src/components/Pages/Home/HomeHero.tsx`)**
+- **Exact Figma Typography Specifications**:
+  - **Tagline (`100% Trusted Car rental platform in the UK`)**: `font-size: 14px; font-weight: 500; color: #1A202C; line-height: 121.2%; font-family: "Plus Jakarta Sans"`.
+  - **Main Heading (`FAST AND EASY WAY TO RENT A CAR`)**: `font-size: 46px; font-weight: 800; color: #1A202C; line-height: 121.2%; text-transform: uppercase;`.
+  - **Description Paragraph (`Our Car Rental online booking system...`)**: `font-size: 16px; font-weight: 500; color: #596780; line-height: 160%; letter-spacing: -0.32px; max-width: 560px` formatted into 3 lines.
+- **CTA Buttons**: `"Booking Now"` (`bg-white rounded-[4px] px-8 py-3.5`) and `"See all cars"`.
+- **Layout & Spacing**:
+  - Exact **`113px` gap** between the left typography column and the right image card.
+  - **Right Hero Image (`Rectangle 23785`)**: Starts at `top: 77.17px`, features a top-left radius of `63px` (`rounded-tl-[63px]`), extends flush to the right viewport edge (`right-0 w-[50vw] xl:w-[48vw]`), and extends downward (`bottom: -55px`) behind the floating search bar.
+
+#### C. **Pickup & Drop-Off Search Bar (`Rectangle 23788`)**
+- **Background Container Strip**: `width: 100%; height: 145px; background: #F6F7F9;` positioned below the hero seam.
+- **Floating Search Card**: `background: #F3F3F3; border-radius: 10px;` floating across the hero boundary (`-translate-y-1/2`).
+- **Divided Sub-Fields**: `Pick – Up` and `Drop – Off` radio badges with 3 divided columns each (`Locations`, `Date`, `Time` with clean dropdowns).
+- **Search Button**: Exact Figma properties (`width: 110px; height: 44px; padding: 0 20px; border-radius: 4px; background: #FFF; font-size: 16px; font-weight: 600; line-height: 150%; letter-spacing: -0.32px`).
+
+#### D. **How It Works Guide (`src/components/Pages/Home/HowItWorks.tsx`)**
+- Clean `#FFFFFF` background with balanced vertical padding.
+- 3 step rental flow (`Choose Location`, `Pick-up Date`, `Book your car`) with custom squircle icon badges and connecting curved wave paths.
+
+#### E. **Promotional Banners (`src/components/Pages/Home/PromoBanners.tsx`)**
+- Background: `#F3F3F3`.
+- 2 responsive promo banner cards with exact **`640px × 360px`** dimensions, `rounded-[10px]` corners, and hover zoom effects.
+
+#### F. **Popular Car Deals (`src/components/Pages/Home/PopularDeals.tsx`)**
+- Clean `#FFFFFF` background with 4 equal-width category tabs and full-width active indicator.
+- Full-bleed car cards (`rounded-[10px]`, `aspect-[3/4]`, wishlist heart toggle, car specs, `Rent Now` button `rounded-[4px]`).
+- Bottom control bar with centered `"Show more car"` button (`rounded-[4px]`) and right-anchored `"120 Car"` counter.
+
+#### G. **Why Choose Us Section (`src/components/Pages/Home/WhyChooseUs.tsx`)**
+- `#F3F3F3` section background.
+- High-resolution car showcase with `rounded-[10px]` corners and 3 feature items with `rounded-[10px]` icon badges.
+
+#### H. **Customer Reviews & Footer (`src/components/Pages/Home/Testimonials.tsx` & `src/shared/Footer.tsx`)**
+- Testimonials carousel in `#C2C6CD` rounded cards with dynamic next/prev rotation and interactive pagination dots.
+- Comprehensive footer with brand vision, social links, categorized lists, and copyright.
+
+---
+
+### 2. 📊 Executive Operations Dashboard (`/admin` & `/dashboard`)
+
+#### A. **Collapsible Sidebar Navigation (`src/components/Dashboard/Sidebar.tsx`)**
+- **Brand Identity**: `3Best Car` logo with red curve swoosh and collapsible toggle button (`«` / `»`).
+- **Main Category**: `Dashboard` (active item with soft orange fill `bg-[#FFF4EC] text-[#FF8A00]` and expand indicator) and `Super Admin`.
+- **Inventory Category**: `Products`, `Create Product`, `Expired Products`, `Low Stocks`, `Category`, `Sub Category`, `Brands`, `Units`, `Variant Attributes`, `Warranties`, `Print Barcode`, `Print QR Code`.
+- **Stock Category**: `Manage Stock`, `Stock Adjustment`, `Stock Transfer`.
+- **Sales & Promo Categories**: `Sales`, `Invoices`, `Sales Return`, `Quotation`, `POS`, and `Coupons & Deals`.
+
+#### B. **Top Navigation Header (`src/components/Dashboard/Header.tsx`)**
+- Global search input with `⌘ K` keyboard shortcut badge.
+- `☁ Coming Soon ⌄` pill dropdown, `+ Add New` orange CTA button (`#FF9F43`), and `🖥 POS` dark button (`#131825`).
+- Toolbar controls: Language flag 🇺🇸, Fullscreen toggle ⛶, Email notification ✉️ with `01` red badge, Notification bell 🔔, and Settings ⚙️.
+- User profile: Photo of `Mike Witzel` with green active status dot and dropdown navigation menu.
+
+#### C. **Greeting & Date Range Bar (`src/components/Dashboard/GreetingBar.tsx`)**
+- `👋 Hi Mike Witzel, here's what's happening with your store today.`
+- Date Range Selector: `📅 01 Jan 2024 - 07 Jan 2024` with refresh button `🔄` and collapse button `⌃`.
+
+#### D. **Top 3 KPI Metric Cards (`src/components/Dashboard/StatsOverview.tsx`)**
+- **Weekly Earning**: `$95000.45` with `▲ 48% increase compare to last week` and custom vector graphic illustration of money bag + growth chart.
+- **No of Total Sales**: Orange gradient card (`#FF9F43` to `#FF8A00`) displaying `10,000+` with trending bar chart icon and refresh button.
+- **No of Purchased Goods**: Deep slate navy card (`#132238`) displaying `800+` with money pouch icon and refresh button.
+
+#### E. **Best Seller List (`src/components/Dashboard/BestSeller.tsx`)**
+- Top 5 best selling cars with thumbnail, model name, price, and sales counter (`Range Rover` $260 / 6547 sales, `Audi S3` $1474 / 3474 sales, `Blue Nissan` $8784 / 1478 sales, `Toyota Corolla` $3240 / 987 sales, `Compact car` $597 / 784 sales) + `View All` action.
+
+#### F. **Recent Transactions Table (`src/components/Dashboard/RecentTransactions.tsx`)**
+- Interactive table with `#`, `Order Details` (image + name + `⏱ 15 Mins`), `Payment` (method + blue transaction ID `#416645453773`), `Status` badges (`● Success` in green, `● Cancelled` in red, `● Pending` in cyan), and `Amount`.
+
+#### G. **Sales Analytics Area Chart (`src/components/Dashboard/SalesAnalyticsChart.tsx`)**
+- Smooth SVG spline area curve with orange gradient fill (`#FF9F43`), interactive node markers with hover tooltips, and year filter `📅 2023 ⌄`.
+
+#### H. **Sales by Countries World Map (`src/components/Dashboard/SalesByCountries.tsx`)**
+- World vector map highlighting Africa in orange `#FF9F43` with floating tooltip `Africa | 3455 Sales`, North America & Asia in navy slate `#1E293B`, and footer growth statistic `▲ 48% increase compare to last week`.
+
+#### I. **Dashboard Footer (`src/app/admin/layout.tsx`)**
+- `2026 © All Right Reserved` on left, `Designed & Developed` on right.
+
+---
+
+## 📁 Repository Structure
 
 ```
-prac/
-├── app/                                  # Next.js 16 App Router root directory
-│   ├── (customer)/                       # Route Group: Public Customer-Facing Portal
-│   │   ├── layout.tsx                    # Customer layout (CustomerNavbar, CustomerFooter, ChatBotWidget)
-│   │   ├── page.tsx                      # Storefront Landing Page (Hero Search, Featured Fleet, FAQ, Policies)
-│   │   └── vehicles/                     # Vehicle Directory & Browsing
-│   │       ├── page.tsx                  # Fleet Catalog with live Search, Category Pills & Price Slider
-│   │       └── [id]/                     # Dynamic Vehicle Detail Route
-│   │           └── page.tsx              # Vehicle Showcase, Specs Grid, Features & Booking Modal trigger
-│   │
-│   ├── admin/                            # Route Group: Executive Back-Office & Operations Portal
-│   │   ├── layout.tsx                    # Admin layout with sticky AdminSidebar & AdminHeader
-│   │   ├── page.tsx                      # Executive Dashboard Overview (StatsCards, RevenueChart, BookingsTable)
-│   │   ├── vehicles/                     # Admin Fleet Register
-│   │   │   └── page.tsx                  # Fleet asset management table, availability toggles & search
-│   │   ├── bookings/                     # Admin Bookings Manifest
-│   │   │   └── page.tsx                  # Reservation management table with status tabs (Active/Confirmed/Pending)
-│   │   └── leads/                        # Admin Inquiries & CRM
-│   │       └── page.tsx                  # Inbound customer leads, channel badges & Telegram dispatch logs
-│   │
-│   ├── api/                              # Next.js Server-Side Route Handlers (REST & AI endpoints)
-│   │   ├── dashboard/                    # Admin Dashboard Metrics API
-│   │   │   └── stats/
-│   │   │       └── route.ts              # Returns dynamic revenue, active bookings, utilization & Recharts data
-│   │   ├── vehicles/                     # Fleet Query API
-│   │   │   ├── route.ts                  # Filterable vehicle catalog (search, category, price, transmission, fuel)
-│   │   │   └── [id]/
-│   │   │       └── route.ts              # Single vehicle lookup by ID with 404 handling
-│   │   ├── bookings/                     # Bookings API
-│   │   │   └── route.ts                  # Query bookings manifest (status filtering) & create new reservations
-│   │   ├── leads/                        # Lead Intake & Automation Route
-│   │   │   └── route.ts                  # Ingests leads & triggers automated Telegram alerts via lib/telegram.ts
-│   │   └── chat/                         # AI Concierge Backend Route
-│   │       └── route.ts                  # OpenAI Responses API server-side handler with policy system instructions
-│   │
-│   ├── favicon.ico                       # Platform favicon
-│   ├── globals.css                       # Tailwind CSS v4 CSS-first design system with @theme inline tokens
-│   └── layout.tsx                        # Global root layout with Inter font, metadata, and HTML skeleton
+digital-pylot-task/
+├── public/                                # Static assets & high-resolution automotive imagery
+│   ├── avatar_mike.jpg                    # Mike Witzel dashboard profile picture
+│   ├── car_full_1.jpg                     # Hero showcase supercar
+│   ├── car_full_2.jpg                     # High-res luxury sports car
+│   ├── car_rush.jpg                       # Luxury performance car
+│   ├── why_choose_us_car.jpg              # Why Choose Us feature image
+│   ├── promo_banner_1.jpg                 # 640x360 Promo Banner 1
+│   ├── promo_banner_2.jpg                 # 640x360 Promo Banner 2
+│   └── hero_bg.jpg                        # Automotive studio background
 │
-├── components/                           # Modular React UI Components
-│   ├── admin/                            # Executive Dashboard Specific Components
-│   │   ├── AdminHeader.tsx               # Top admin bar with breadcrumbs, system status badge & refresh trigger
-│   │   ├── AdminSidebar.tsx              # Collapsible sticky sidebar navigation with active route highlights
-│   │   ├── BookingsTable.tsx             # Reservation manifest table with status badges & customer details
-│   │   ├── DashboardFilters.tsx          # Interactive filter controls (7d/30d/90d timeframe & category select)
-│   │   ├── RevenueChart.tsx              # Recharts Area Chart (Revenue trends) & Bar Chart (Category distribution)
-│   │   └── StatsCards.tsx                # 4-card KPI metric overview (Revenue, Bookings, Fleet, Leads)
+├── src/
+│   ├── app/
+│   │   ├── (customer)/                    # Customer-Facing Storefront
+│   │   │   ├── layout.tsx                 # Storefront layout (Navbar + Footer)
+│   │   │   └── page.tsx                   # Main Landing Page
+│   │   │
+│   │   ├── admin/                         # Executive Operations Dashboard
+│   │   │   ├── layout.tsx                 # Admin Layout with Sidebar & Header
+│   │   │   └── page.tsx                   # Dashboard Main View
+│   │   │
+│   │   ├── dashboard/                     # Alias route pointing to /admin
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   │
+│   │   ├── globals.css                    # Tailwind CSS v4 tokens, fonts & smooth scrolling
+│   │   └── layout.tsx                     # Root HTML layout with Google Fonts
 │   │
-│   ├── customer/                         # Customer Storefront Specific Components
-│   │   ├── BookingModal.tsx              # Multi-step checkout modal with real-time day/price calculation
-│   │   ├── ChatBotWidget.tsx             # Floating AI Concierge assistant with quick-prompt chips & vehicle cards
-│   │   ├── CustomerFooter.tsx            # Footer with brand links, rental policies, contact & newsletter
-│   │   ├── CustomerNavbar.tsx            # Responsive glassmorphism navigation with mobile drawer
-│   │   ├── HeroSection.tsx               # Hero banner with background backdrop & quick fleet search bar
-│   │   ├── VehicleCard.tsx               # Vehicle card featuring specs, pricing, badge status & CTA buttons
-│   │   ├── VehicleFilters.tsx            # Sidebar filters (Search, Categories, Price Slider, Transmission, Fuel)
-│   │   └── VehicleGrid.tsx               # Responsive vehicle collection grid with empty & loading states
+│   ├── components/
+│   │   ├── Cards/
+│   │   │   ├── AuthModal.tsx              # Sign In / Register dialog modal
+│   │   │   └── BookingModal.tsx           # Multi-day price calculator & booking modal
+│   │   │
+│   │   ├── Dashboard/                     # Dashboard Modular Components
+│   │   │   ├── BestSeller.tsx             # Top 5 best selling cars list
+│   │   │   ├── GreetingBar.tsx            # Greeting & Date Range Bar
+│   │   │   ├── Header.tsx                 # Top Dashboard Header with Search & User Menu
+│   │   │   ├── RecentTransactions.tsx     # Order details & status table
+│   │   │   ├── SalesAnalyticsChart.tsx    # Smooth SVG spline area curve chart
+│   │   │   ├── SalesByCountries.tsx       # World map with country sales highlight
+│   │   │   ├── Sidebar.tsx                # Collapsible multi-category sidebar
+│   │   │   └── StatsOverview.tsx          # 3 Top KPI metric cards
+│   │   │
+│   │   └── Pages/
+│   │       └── Home/                      # Storefront Landing Sections
+│   │           ├── HomeHero.tsx           # Pixel-perfect Hero & Search Bar
+│   │           ├── HowItWorks.tsx         # 3-step rental flow
+│   │           ├── PopularDeals.tsx       # Categorized fleet tabs & car cards
+│   │           ├── PromoBanners.tsx       # 640x360 promotional cards
+│   │           ├── Testimonials.tsx       # Interactive review carousel
+│   │           └── WhyChooseUs.tsx        # Feature highlights & car image
 │   │
-│   └── ui/                               # shadcn/ui Tailwind v4 Primitives
-│       ├── avatar.tsx                    # Avatar and fallback badge
-│       ├── badge.tsx                     # Status and category badges
-│       ├── button.tsx                    # Button with primary, secondary, outline, destructive & ghost variants
-│       ├── calendar.tsx                  # Date picker calendar component
-│       ├── card.tsx                      # Card container, header, content, footer
-│       ├── dialog.tsx                    # Modal dialog overlay and content wrapper
-│       ├── dropdown-menu.tsx             # Dropdown menus and action triggers
-│       ├── input.tsx                     # Form text and search inputs
-│       ├── popover.tsx                   # Popover wrapper for dropdowns and date pickers
-│       ├── select.tsx                    # Form select dropdown
-│       ├── separator.tsx                 # Visual divider component
-│       ├── sheet.tsx                     # Slide-over sheet for mobile drawers
-│       ├── table.tsx                     # Clean, accessible data table component
-│       └── tabs.tsx                      # Navigational tabs for filtering views
+│   ├── data/
+│   │   └── mockData.ts                    # Complete vehicle database (36+ cars) & reviews
+│   │
+│   └── shared/
+│       ├── Navbar.tsx                     # Global navigation bar
+│       └── Footer.tsx                     # Global footer
 │
-├── lib/                                  # Shared Utilities, Data Store, & Helper Libraries
-│   ├── mock-data.ts                      # Parameterized in-memory dataset (Vehicles, Bookings, Leads, Metrics)
-│   ├── telegram.ts                       # Telegram Bot API notification service & fallback webhook logger
-│   ├── types.ts                          # Strict TypeScript domain interfaces (Vehicle, Booking, Lead, Metric)
-│   └── utils.ts                          # Utility functions (cn class merger with clsx and tailwind-merge)
-│
-├── public/                               # Static assets, vehicle images, and SVG illustrations
-├── .env.local.example                    # Sample environment variables template (OpenAI, Telegram, App URL)
-├── .gitignore                            # Standard git ignore configuration
-├── ARCHITECTURE.md                       # Comprehensive architecture document with Mermaid diagrams
-├── PROJECT.md                            # Technical requirements and assessment evaluation rubric mapping
-├── README.md                             # Primary project documentation, folder guide & setup instructions
-├── TODO.md                               # 3-day execution roadmap and development checklist
-├── components.json                       # shadcn/ui configuration file
-├── eslint.config.mjs                     # ESLint configuration
-├── next.config.ts                        # Next.js configuration (Server Actions, Image domains)
-├── package.json                          # Project dependencies, scripts & metadata
-├── postcss.config.mjs                    # PostCSS configuration for @tailwindcss/postcss
-└── tsconfig.json                         # TypeScript configuration with strict mode & path aliases (@/*)
+├── next.config.ts                         # Next.js configuration & remote image domains
+├── package.json                           # Dependencies & scripts
+├── tsconfig.json                          # TypeScript configuration
+└── README.md                              # Technical documentation
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 🚀 Running the Application Locally
 
-| Layer | Technology | Version / Specification | Rationale |
-|---|---|---|---|
-| **Framework** | Next.js (App Router) | `16.3.3` | Server Components, Route Groups, fast Turbopack compilation |
-| **Runtime / Library** | React | `19.0.0` | Modern hooks, transitions, and native streaming |
-| **Language** | TypeScript | `5.x` | Strict type safety across domain models and API payloads |
-| **Styling Engine** | Tailwind CSS | `v4.0` | CSS-first architecture with `@theme inline` design tokens |
-| **Component Primitives**| shadcn/ui | Tailwind v4 Compatible | Accessible, unstyled, composable primitives (Radix UI) |
-| **Data Visualization** | Recharts | `2.15.x` | Interactive Area Chart (Revenue) & Bar Chart (Fleet split) |
-| **Icons** | Lucide React | `0.475.x` | Consistent, lightweight SVG iconography |
-| **AI Integration** | OpenAI Responses API | `openai ^4.85` | Server-side structured reasoning & catalogue grounding |
-| **Automation Channel** | Telegram Bot API | Standard REST | Instant markdown reservation dispatch tickets |
-| **Deployment Target** | Vercel | Production | Zero-config edge deployment with optimized serverless routes |
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
----
+2. **Start the Development Server**:
+   ```bash
+   npm run dev
+   ```
 
-## 🚀 Getting Started & Local Setup
+3. **Access the Pages**:
+   - **Customer Landing Page**: [`http://localhost:3000`](http://localhost:3000)
+   - **Executive Operations Dashboard**: [`http://localhost:3000/admin`](http://localhost:3000/admin) or [`http://localhost:3000/dashboard`](http://localhost:3000/dashboard)
 
-### 1. Prerequisites
-- **Node.js**: `20.x` or higher (LTS recommended)
-- **Package Manager**: `npm`, `pnpm`, or `yarn`
-
-### 2. Installation
-```bash
-# Clone the repository
-git clone <YOUR_REPO_URL>
-cd prac
-
-# Install project dependencies
-npm install
-```
-
-### 3. Environment Configuration
-Create a `.env.local` file by copying the provided example:
-```bash
-cp .env.local.example .env.local
-```
-
-Populate the configuration variables in `.env.local`:
-```env
-# ----------------------------------------------------
-# 1. OpenAI Responses API Configuration (Server-Side)
-# ----------------------------------------------------
-OPENAI_API_KEY=sk-your-actual-openai-api-key
-OPENAI_MODEL=gpt-5.5
-
-# ----------------------------------------------------
-# 2. Telegram Bot Automation Pipeline (Optional)
-# ----------------------------------------------------
-TELEGRAM_BOT_TOKEN=123456789:ABCdefGhIJKlmNoPQRstuVWXyz
-TELEGRAM_CHAT_ID=-1001234567890
-
-# ----------------------------------------------------
-# 3. Application Base URL
-# ----------------------------------------------------
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-> **💡 Zero-Config Fallback**: If no OpenAI API key or Telegram Bot credentials are provided, LuxeDrive automatically activates its built-in **intelligent fallback simulation engines**. The AI Concierge and Lead Dispatch workflows remain 100% interactive and evaluatable out of the box!
-
-### 4. Running the Application
-```bash
-# Start Next.js development server with Turbopack
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### 5. Production Build & Verification
-```bash
-# Compile and test production build
-npm run build
-npm run start
-```
-
----
-
-## 🧭 Application Surfaces & Route Map
-
-### 🚘 Customer-Facing Portal
-| Route | Surface | Key Features |
-|---|---|---|
-| `/` | Storefront Home | Hero search bar, featured vehicle carousel, category tabs, customer reviews & rental policy breakdown. |
-| `/vehicles` | Vehicle Catalog | Real-time search query filter, category filter buttons, interactive price slider, transmission & fuel selectors. |
-| `/vehicles/[id]` | Vehicle Details | High-resolution showcase, technical specifications, included amenities, and instant reservation trigger. |
-| `BookingModal` | Global Modal | Interactive date range picker, automatic duration calculation, refundable deposit breakdown, and lead creation. |
-| `ChatBotWidget` | Global Floating Widget | AI Rental Concierge with predefined prompt chips, policy FAQ answering, and structured vehicle recommendations. |
-
-### 📊 Executive Operations Portal (Admin)
-| Route | Surface | Key Features |
-|---|---|---|
-| `/admin` | Dashboard Overview | Live KPI cards (Revenue, Bookings, Active Fleet, Leads), Recharts Area Chart for revenue trends, Recharts Bar Chart for fleet distribution, date-range (7d/30d/90d) and category filters, and live bookings table. |
-| `/admin/vehicles` | Fleet Asset Register | Comprehensive fleet asset table with status badges (`available`, `rented`, `maintenance`), search filter, and vehicle specifications. |
-| `/admin/bookings` | Bookings Manifest | Status-tabbed reservation manifest (`all`, `active`, `confirmed`, `pending`, `completed`) with customer contact details and pricing. |
-| `/admin/leads` | Inquiries & Leads CRM | Customer lead intake table showing acquisition channels (`website_form`, `chatbot`, `booking_inquiry`) and Telegram automation delivery logs. |
-
----
-
-## 🤖 AI Concierge Architecture & Demo Flow
-
-The AI Rental Concierge is integrated server-side using the **OpenAI Responses API** (`openai.responses.create` via `/app/api/chat/route.ts`):
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Customer
-    participant UI as ChatBotWidget (Client)
-    participant API as /app/api/chat (Server)
-    participant Engine as OpenAI Responses API / Fallback
-
-    Customer->>UI: Types query or clicks prompt chip
-    UI->>API: POST { message, conversationHistory }
-    Note over API: Injects system instructions:<br/>1. Rental policies (Deposit $500, Age 21+, Insurance)<br/>2. Live fleet catalog (SUV, Sport, Electric, Sedan)
-    API->>Engine: Generate grounded response + vehicle recommendations
-    Engine-->>API: Structured response with matching vehicle IDs
-    API-->>UI: JSON { reply, recommendedVehicles: [...] }
-    UI-->>Customer: Renders markdown message + Interactive vehicle cards
-```
-
-### Try These Prompt Scenarios:
-1. **Policy FAQ Inquiry**:  
-   - *"What is your security deposit and cancellation policy?"*  
-   - ➜ **Response**: Explains the standard $500 refundable deposit and 48-hour free cancellation window.
-2. **Personalized Trip Recommendation**:  
-   - *"I'm planning a family road trip with 5 passengers and luggage. What do you recommend?"*  
-   - ➜ **Response**: Analyzes cabin space, recommending the **BMW X5 M-Sport** or **Tesla Model Y**, displaying interactive cards with specs and "Book Now" buttons.
-3. **High-Performance Vehicle Query**:  
-   - *"What is the fastest sports car in your fleet?"*  
-   - ➜ **Response**: Highlights the **Porsche 911 Carrera GTS** (0-60 mph in 3.2s, 473 hp).
-
----
-
-## ⚡ Automation & Lead Notification Pipeline
-
-When a customer submits a reservation inquiry via `BookingModal.tsx` or the AI Concierge:
-
-```mermaid
-flowchart LR
-    A["Customer Submits Reservation"] --> B["POST /app/api/leads"]
-    B --> C["lib/telegram.ts"]
-    C --> D{"Telegram Configured?"}
-    D -- Yes --> E["Telegram Bot API<br/>(Markdown Ticket Pushed to Dispatch Channel)"]
-    D -- No --> F["Console Fallback Logger<br/>(Structured Ticket Logged)"]
-    B --> G["Admin CRM Updated<br/>(/admin/leads)"]
-```
-
-### Sample Automated Telegram Ticket:
-```text
-🚨 NEW LUXEDRIVE RESERVATION INQUIRY
-
-👤 Customer: Sarah Connor
-📧 Email: sarah.c@example.com
-📞 Phone: +1 (555) 019-2834
-🚘 Vehicle: Porsche 911 Carrera GTS
-📅 Dates: Oct 12, 2026 ➔ Oct 15, 2026 (3 Days)
-💰 Total Value: $1,470 (Includes $500 Deposit)
-📝 Notes: Requesting airport pickup at Terminal 2.
-📡 Source: booking_inquiry
-```
-
----
-
-## 📡 API Endpoints Reference
-
-| Method | Endpoint | Description | Query Parameters / Payload |
-|---|---|---|---|
-| `GET` | `/app/api/dashboard/stats` | Fetches dashboard KPI summary and Recharts data | `timeframe` (`7d`, `30d`, `90d`), `category` (`all`, `suv`, `sport`, etc.) |
-| `GET` | `/app/api/vehicles` | Returns filtered fleet catalog | `search`, `category`, `maxPrice`, `transmission`, `fuelType` |
-| `GET` | `/app/api/vehicles/[id]` | Returns details for a single vehicle | Route param `[id]` (`v1`, `v2`, etc.) |
-| `GET` | `/app/api/bookings` | Returns reservations list | `status` (`all`, `active`, `confirmed`, `pending`, `completed`) |
-| `POST` | `/app/api/bookings` | Creates a new customer reservation | `{ vehicleId, customerName, email, phone, startDate, endDate, totalPrice }` |
-| `POST` | `/app/api/leads` | Submits a new lead & triggers Telegram alert | `{ customerName, email, phone, vehicleName, startDate, endDate, notes, source }` |
-| `POST` | `/app/api/chat` | AI Concierge conversation & recommendation | `{ message, history }` |
-
----
-
-## 🔮 Future Roadmap & Production Scalability
-
-1. **Persistent Database Layer**: Integrate Prisma ORM with Supabase / PostgreSQL including Row-Level Security (RLS) for multi-tenant car rental agencies.
-2. **Payment Gateway Integration**: Connect Stripe Elements / Stripe Checkout for live authorization holds on security deposits and automated rental invoicing.
-3. **Real-Time Fleet Telematics**: WebSockets streaming simulation for vehicle GPS coordinates, fuel/battery levels, and odometer logs.
-4. **Voice Concierge Agent**: OpenAI Realtime API integration over WebRTC for direct phone and voice-driven car reservations.
-
----
-
-## 📄 License & Attribution
-
-Developed as an open-source technical assessment for **LuxeDrive Fleet Operations & Car Rental Platform**. Engineered with Next.js 16, Tailwind CSS v4, and OpenAI.
+4. **Verify TypeScript & Production Build**:
+   ```bash
+   npx tsc --noEmit
+   npm run build
+   ```

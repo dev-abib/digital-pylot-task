@@ -49,11 +49,11 @@ const STEPS: StepItem[] = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-work" className="w-full py-16 sm:py-24 bg-white font-jakarta">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section id="how-it-work" className="w-full py-10 sm:py-16 lg:py-24 bg-white font-jakarta">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
-          <h2 className="font-rubik text-3xl sm:text-4xl lg:text-[40px] font-bold text-[#131825] tracking-tight leading-tight">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 lg:mb-20">
+          <h2 className="font-rubik text-2xl sm:text-3xl lg:text-[40px] font-bold text-[#131825] tracking-tight leading-tight">
             How it works
           </h2>
           <p className="mt-4 text-sm sm:text-base text-[#4b5563] leading-relaxed max-w-lg mx-auto font-jakarta">

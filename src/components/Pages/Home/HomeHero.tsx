@@ -28,11 +28,11 @@ export function HomeHero() {
   return (
     <section className="relative w-full font-jakarta">
       {/* Top Hero Section matching Figma Design */}
-      <div className="relative w-full bg-[#cbd0d8] text-[#131825] pt-10 sm:pt-14 pb-16 sm:pb-20 overflow-hidden">
-        {/* Rectangle 23785: Hero Image with top-left radius of 63px */}
+      <div className="relative w-full bg-[#cbd0d8] text-[#131825] pt-6 sm:pt-10 lg:pt-14 pb-6 sm:pb-10 lg:pb-16 overflow-visible">
+        {/* Rectangle 23785: Hero Image extending to the right viewport edge, top: 77.17px, and bottom extending behind search bar on desktop */}
         <div 
-          style={{ top: '77.17px', borderTopLeftRadius: '63px' }}
-          className="hidden lg:block absolute right-0 bottom-0 w-[50vw] xl:w-[48vw] rounded-tl-[63px] overflow-hidden bg-[#9ca3af]/40 z-0 group shadow-inner"
+          style={{ top: '77.17px', bottom: '-55px', borderTopLeftRadius: '63px' }}
+          className="hidden lg:block absolute right-0 w-[50vw] xl:w-[48vw] rounded-tl-[63px] overflow-hidden bg-[#9ca3af]/40 z-0 group shadow-inner"
         >
           <Image
             src="/car_full_1.jpg"
@@ -45,8 +45,8 @@ export function HomeHero() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-[113px] min-h-[440px]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-[113px] min-h-0 lg:min-h-[440px]">
             {/* Left Column Text & Actions */}
             <div className="w-full lg:max-w-[560px] flex flex-col items-start z-10 shrink-0">
               <span
@@ -58,7 +58,7 @@ export function HomeHero() {
                   fontWeight: 500,
                   lineHeight: '121.2%',
                 }}
-                className="mb-3 block"
+                className="mb-2 sm:mb-3 block text-xs sm:text-sm"
               >
                 100% Trusted Car rental platform in the UK
               </span>
@@ -67,13 +67,13 @@ export function HomeHero() {
                 style={{
                   color: '#1A202C',
                   fontFamily: 'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
-                  fontSize: '46px',
+                  fontSize: 'clamp(28px, 6vw, 46px)',
                   fontStyle: 'normal',
                   fontWeight: 800,
                   lineHeight: '121.2%',
                   textTransform: 'uppercase',
                 }}
-                className="tracking-tight mb-5"
+                className="tracking-tight mb-4 sm:mb-5"
               >
                 FAST AND EASY WAY TO
                 <br />
@@ -84,41 +84,41 @@ export function HomeHero() {
                 style={{
                   color: '#596780',
                   fontFamily: 'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
-                  fontSize: '16px',
+                  fontSize: '15px',
                   fontStyle: 'normal',
                   fontWeight: 500,
                   lineHeight: '160%',
                   letterSpacing: '-0.32px',
                 }}
-                className="max-w-[560px] mb-8 font-normal"
+                className="max-w-[560px] mb-6 sm:mb-8 font-normal text-sm sm:text-base"
               >
                 Our Car Rental online booking system designed to meet the specific needs of car rental business owners. This easy-to-use car rental software will let you manage.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-6 sm:gap-8">
                 <button
                   type="button"
                   onClick={() => setSelectedCarForBooking(MOCK_CARS[0])}
-                  className="bg-white text-[#131825] px-8 py-3.5 rounded-[4px] font-bold text-base shadow-sm hover:shadow-md hover:bg-gray-50 active:scale-95 cursor-pointer transition-all border border-black/5"
+                  className="bg-white text-[#131825] px-6 sm:px-8 py-3 sm:py-3.5 rounded-[4px] font-bold text-sm sm:text-base shadow-sm hover:shadow-md hover:bg-gray-50 active:scale-95 cursor-pointer transition-all border border-black/5"
                 >
                   Booking Now
                 </button>
 
                 <Link
                   href="#rental-details"
-                  className="text-[#131825] font-bold text-base hover:underline cursor-pointer transition-colors"
+                  className="text-[#131825] font-bold text-sm sm:text-base hover:underline cursor-pointer transition-colors"
                 >
                   See all cars
                 </Link>
               </div>
             </div>
 
-            {/* Right Column Spacer on Desktop / Responsive Image on Mobile */}
-            <div className="lg:col-span-6 flex justify-end relative lg:hidden">
+            {/* Right Column Mobile Image */}
+            <div className="w-full flex justify-end relative lg:hidden mt-2">
               <div 
-                style={{ borderTopLeftRadius: '63px' }}
-                className="relative w-full h-[320px] sm:h-[400px] rounded-tl-[63px] overflow-hidden bg-[#9ca3af]/40 shadow-inner group"
+                style={{ borderTopLeftRadius: '40px' }}
+                className="relative w-full h-[200px] sm:h-[260px] rounded-tl-[40px] overflow-hidden bg-[#9ca3af]/40 shadow-inner group"
               >
                 <Image
                   src="/car_full_1.jpg"
@@ -134,12 +134,12 @@ export function HomeHero() {
         </div>
       </div>
 
-      {/* Down of Hero Strip: background #F6F7F9, height 145px with floating Search Card */}
-      <div className="w-full bg-[#F6F7F9] h-auto lg:h-[145px] relative flex items-center justify-center">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full -translate-y-1/2 relative z-20">
+      {/* Down of Hero Strip: background #F6F7F9, height 145px on desktop */}
+      <div className="w-full bg-[#F6F7F9] h-auto lg:h-[145px] relative flex items-center justify-center py-4 lg:py-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full -translate-y-0 lg:-translate-y-1/2 relative z-20">
           <form
             onSubmit={handleSearch}
-            className="bg-[#F3F3F3] rounded-[10px] p-5 lg:px-8 lg:py-4 shadow-sm border border-black/5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 lg:gap-8"
+            className="bg-[#F3F3F3] rounded-[10px] p-4 sm:p-5 lg:px-8 lg:py-4 shadow-sm border border-black/5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-5 sm:gap-6 lg:gap-8"
           >
             {/* Pick-Up Column */}
             <div className="flex-1">
@@ -340,24 +340,10 @@ export function HomeHero() {
             </div>
 
             {/* Search Action Button */}
-            <div className="flex items-center justify-end lg:self-center pt-2 lg:pt-0">
+            <div className="flex items-center justify-center sm:justify-end lg:self-center pt-2 lg:pt-0 w-full lg:w-auto">
               <button
                 type="submit"
-                style={{
-                  width: '110px',
-                  height: '44px',
-                  padding: '0 20px',
-                  borderRadius: '4px',
-                  background: '#FFFFFF',
-                  color: '#1A202C',
-                  fontFamily: 'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 600,
-                  lineHeight: '150%',
-                  letterSpacing: '-0.32px',
-                }}
-                className="flex items-center justify-center gap-2 shadow-xs hover:bg-gray-50 active:scale-95 cursor-pointer transition-all duration-200 shrink-0 border border-black/5"
+                className="w-full sm:w-[110px] h-[44px] px-5 rounded-[4px] bg-white text-[#1A202C] font-semibold text-base flex items-center justify-center gap-2 shadow-xs hover:bg-gray-50 active:scale-95 cursor-pointer transition-all duration-200 shrink-0 border border-black/5"
               >
                 Search
               </button>

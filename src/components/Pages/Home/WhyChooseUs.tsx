@@ -64,10 +64,10 @@ const FEATURES: FeatureItem[] = [
 
 export function WhyChooseUs() {
   return (
-    <section id="why-choose-us" className="w-full py-16 sm:py-24 bg-[#F3F3F3] font-jakarta">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section id="why-choose-us" className="w-full py-10 sm:py-16 lg:py-24 bg-[#F3F3F3] font-jakarta">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 lg:mb-20">
           <h2 className="font-rubik text-3xl sm:text-4xl lg:text-[40px] font-bold text-[#131825] tracking-tight leading-tight">
             Why choose us
           </h2>
@@ -77,7 +77,7 @@ export function WhyChooseUs() {
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-16 items-center">
           {/* Left Media / Image Column */}
           <div className="lg:col-span-6 flex justify-center">
             <div className="relative w-full aspect-square max-w-[500px] rounded-[10px] overflow-hidden shadow-sm bg-[#cbd0d8] group border border-black/5">
@@ -94,7 +94,7 @@ export function WhyChooseUs() {
           </div>
 
           {/* Right Features List Column */}
-          <div className="lg:col-span-6 flex flex-col space-y-8 sm:space-y-10">
+          <div className="lg:col-span-6 flex flex-col space-y-4 sm:space-y-8">
             {FEATURES.map((feature) => (
               <div
                 key={feature.id}
