@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar } from '@/shared/Navbar';
 import { Footer } from '@/shared/Footer';
+import { ChatBotWidget } from '@/components/AI/ChatBotWidget';
 
 export default function CustomerLayout({
   children,
@@ -12,6 +13,7 @@ export default function CustomerLayout({
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <ChatBotWidget />
     </div>
   );
 }

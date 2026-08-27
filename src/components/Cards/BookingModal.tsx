@@ -18,6 +18,7 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen || !car) return null;
 
@@ -27,13 +28,36 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
   const diffTime = Math.max(end.getTime() - start.getTime(), 1000 * 3600 * 24);
   const rentalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
 
-  const basePrice = car.price * rentalDays;
+  const basePrice = (car?.price || 0) * rentalDays;
   const insurancePrice = insurance ? 15 * rentalDays : 0;
   const totalPrice = basePrice + insurancePrice;
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSuccess(true);
+    setIsSubmitting(true);
+
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: customerName || 'Valued Customer',
+          customerEmail: customerEmail || 'guest@bestauto.com',
+          carName: car.name,
+          carPrice: car.price,
+          pickupDate,
+          returnDate,
+          totalPrice,
+          source: 'storefront_booking',
+          notes: `Location: ${location}, Insurance: ${insurance ? 'Yes ($15/d Zero Excess)' : 'Standard'}`,
+        }),
+      });
+    } catch (err) {
+      console.error('Booking dispatch error:', err);
+    } finally {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }
   };
 
   const handleClose = () => {

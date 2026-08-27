@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { Calendar, ChevronDown } from 'lucide-react';
 
-interface ChartPoint {
+export interface ChartPoint {
   month: string;
   value: number; // in thousands (e.g. 24 = 24k)
 }
 
-const DATA_POINTS: ChartPoint[] = [
+const DEFAULT_POINTS: ChartPoint[] = [
   { month: 'Jan', value: 24 },
   { month: 'Feb', value: 31 },
   { month: 'Mar', value: 17 },
@@ -20,9 +20,20 @@ const DATA_POINTS: ChartPoint[] = [
   { month: 'Sep', value: 21 },
 ];
 
-export function SalesAnalyticsChart() {
-  const [selectedYear, setSelectedYear] = useState('2023');
-  const [hoveredPoint, setHoveredPoint] = useState<ChartPoint | null>(null);
+interface SalesAnalyticsChartProps {
+  data?: ChartPoint[];
+  year?: string;
+  onYearChange?: (year: string) => void;
+}
+
+export function SalesAnalyticsChart({
+  data = DEFAULT_POINTS,
+  year = '2023',
+  onYearChange,
+}: SalesAnalyticsChartProps) {
+  const [selectedYear, setSelectedYear] = useState(year);
+  const [hoveredPoint, setHoveredPoint] = useState<(ChartPoint & { x: number; y: number }) | null>(null);
+  const [showYearDropdown, setShowYearDropdown] = useState(false);
 
   // SVG Chart Geometry
   const width = 620;
@@ -36,9 +47,11 @@ export function SalesAnalyticsChart() {
   const chartHeight = height - paddingTop - paddingBottom;
   const maxVal = 60; // 60k max
 
+  const chartPoints = data && data.length > 0 ? data : DEFAULT_POINTS;
+
   // Convert points to SVG coords
-  const points = DATA_POINTS.map((pt, index) => {
-    const x = paddingLeft + (index / (DATA_POINTS.length - 1)) * chartWidth;
+  const points = chartPoints.map((pt, index) => {
+    const x = paddingLeft + (index / (chartPoints.length - 1)) * chartWidth;
     const y = paddingTop + chartHeight - (pt.value / maxVal) * chartHeight;
     return { ...pt, x, y };
   });
@@ -64,19 +77,46 @@ export function SalesAnalyticsChart() {
   };
 
   const linePath = makeSmoothPath(points);
-  const areaPath = `${linePath} L ${points[points.length - 1].x},${
-    paddingTop + chartHeight
-  } L ${points[0].x},${paddingTop + chartHeight} Z`;
+  const areaPath = `${linePath} L ${points[points.length - 1].x},${paddingTop + chartHeight} L ${points[0].x},${paddingTop + chartHeight} Z`;
 
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs font-jakarta flex flex-col justify-between h-full">
       {/* Header */}
-      <div className="flex items-center justify-between pb-2 mb-2">
+      <div className="flex items-center justify-between pb-4 border-b border-gray-50 mb-2">
         <h3 className="text-base font-bold text-gray-900">Sales Analytics</h3>
-        <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 font-medium hover:bg-gray-50 cursor-pointer transition-colors shadow-2xs">
-          <Calendar className="w-3.5 h-3.5 text-gray-400" />
-          <span>{selectedYear}</span>
-          <ChevronDown className="w-3 h-3 text-gray-400" />
+
+        {/* Year Selector with Dropdown */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowYearDropdown(!showYearDropdown)}
+            className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 font-medium hover:bg-gray-50 cursor-pointer transition-colors shadow-2xs"
+          >
+            <Calendar className="w-3 h-3 text-gray-400" />
+            <span>{selectedYear}</span>
+            <ChevronDown className="w-3 h-3 text-gray-400" />
+          </button>
+
+          {showYearDropdown && (
+            <div className="absolute right-0 mt-1 w-28 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-30 font-jakarta text-xs">
+              {['2024', '2023', '2022'].map((yr) => (
+                <button
+                  key={yr}
+                  type="button"
+                  onClick={() => {
+                    setSelectedYear(yr);
+                    onYearChange?.(yr);
+                    setShowYearDropdown(false);
+                  }}
+                  className={`w-full text-left px-3 py-1.5 hover:bg-gray-50 transition-colors ${
+                    selectedYear === yr ? 'text-[#FF9F43] font-bold bg-[#FFF4EC]' : 'text-gray-700'
+                  }`}
+                >
+                  {yr}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -134,33 +174,36 @@ export function SalesAnalyticsChart() {
           />
 
           {/* Points & Interactive Nodes */}
-          {points.map((pt, i) => (
+          {points.map((pt) => (
             <g
               key={pt.month}
               onMouseEnter={() => setHoveredPoint(pt)}
               onMouseLeave={() => setHoveredPoint(null)}
-              className="cursor-pointer"
+              className="cursor-pointer group"
             >
-              {/* Outer Ring on Hover */}
+              {/* Outer Glow Circle on Hover */}
               <circle
                 cx={pt.x}
                 cy={pt.y}
-                r="6"
-                fill="#FF9F43"
-                fillOpacity="0.2"
-                className="transition-all hover:scale-125"
+                r="7"
+                className="fill-[#FF9F43]/20 group-hover:scale-150 transition-all opacity-0 group-hover:opacity-100"
               />
-              {/* Point Dot */}
-              <circle cx={pt.x} cy={pt.y} r="3" fill="#FF9F43" stroke="#FFF" strokeWidth="1.5" />
-
-              {/* X-Axis Labels */}
+              {/* Point Node */}
+              <circle
+                cx={pt.x}
+                cy={pt.y}
+                r="4"
+                className="fill-white stroke-[#FF9F43] stroke-2 group-hover:r-5 transition-all"
+              />
+              {/* X Axis Month Labels */}
               <text
                 x={pt.x}
-                y={height - 12}
+                y={paddingTop + chartHeight + 20}
                 textAnchor="middle"
                 fill="#9CA3AF"
                 fontSize="11"
                 fontFamily="sans-serif"
+                className="font-medium group-hover:fill-gray-900 group-hover:font-bold transition-colors"
               >
                 {pt.month}
               </text>
@@ -168,16 +211,17 @@ export function SalesAnalyticsChart() {
           ))}
         </svg>
 
-        {/* Hover Tooltip */}
+        {/* Hover Tooltip Card */}
         {hoveredPoint && (
           <div
+            className="absolute -top-1 bg-[#131825] text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-xl pointer-events-none transform -translate-x-1/2 transition-all duration-150"
             style={{
-              left: `${(hoveredPoint.value / 60) * 100}%`,
-              top: '20px',
+              left: `${(hoveredPoint.x / width) * 100}%`,
+              top: `${Math.max(hoveredPoint.y - 45, 10)}px`,
             }}
-            className="absolute bg-gray-900 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow-lg pointer-events-none -translate-x-1/2"
           >
-            ${hoveredPoint.value}k Revenue
+            <p className="text-[10px] text-gray-400">{hoveredPoint.month} Sales</p>
+            <p className="font-bold text-[#FF9F43]">${hoveredPoint.value},000.00</p>
           </div>
         )}
       </div>

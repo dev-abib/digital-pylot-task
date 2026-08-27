@@ -14,15 +14,29 @@ import {
   ChevronDown,
   Cloud,
   ArrowUpRight,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
+  onOpenAddVehicle?: () => void;
+  onOpenPOS?: () => void;
+  searchQuery?: string;
+  onSearchChange?: (q: string) => void;
+  notificationCount?: number;
 }
 
-export function Header({ onToggleSidebar }: HeaderProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+export function Header({
+  onToggleSidebar,
+  onOpenAddVehicle,
+  onOpenPOS,
+  searchQuery = '',
+  onSearchChange,
+  notificationCount = 1,
+}: HeaderProps) {
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   return (
     <header className="h-16 bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 font-jakarta">
@@ -31,7 +45,7 @@ export function Header({ onToggleSidebar }: HeaderProps) {
         <button
           type="button"
           onClick={onToggleSidebar}
-          className="lg:hidden w-8 h-8 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="lg:hidden w-8 h-8 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 flex items-center justify-center transition-colors cursor-pointer"
           title="Open Menu"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,8 +58,8 @@ export function Header({ onToggleSidebar }: HeaderProps) {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search"
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            placeholder="Search fleet, bookings, or transactions..."
             className="w-full bg-[#F8F9FA] border border-gray-200 rounded-lg pl-10 pr-10 sm:pr-12 py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF9F43]/20 focus:border-[#FF9F43] transition-all"
           />
           <div className="hidden sm:block absolute right-2.5 top-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded px-1.5 py-0.5 text-[10px] font-semibold text-gray-400 shadow-2xs pointer-events-none">
@@ -55,30 +69,48 @@ export function Header({ onToggleSidebar }: HeaderProps) {
       </div>
 
       {/* Right Actions Toolbar */}
-      <div className="flex items-center gap-3 lg:gap-4">
+      <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-4">
         {/* Coming Soon Dropdown */}
-        <button
-          type="button"
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-        >
-          <Cloud className="w-3.5 h-3.5 text-gray-500" />
-          <span>Coming Soon</span>
-          <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
-        </button>
+        <div className="relative hidden sm:block">
+          <button
+            type="button"
+            onClick={() => setShowComingSoon(!showComingSoon)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+          >
+            <Cloud className="w-3.5 h-3.5 text-gray-500" />
+            <span>Coming Soon</span>
+            <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+          </button>
+
+          {showComingSoon && (
+            <div className="absolute right-0 mt-1.5 w-48 bg-white border border-gray-200 rounded-xl shadow-xl p-3 z-40 text-xs animate-in fade-in zoom-in-95 duration-150">
+              <p className="font-bold text-gray-900">Upcoming Features</p>
+              <ul className="mt-2 space-y-1.5 text-gray-500 text-[11px]">
+                <li className="flex items-center gap-1.5">⚡ AI Telematics Live GPS</li>
+                <li className="flex items-center gap-1.5">💳 Stripe Auto-Invoicing</li>
+                <li className="flex items-center gap-1.5">📲 SMS Notification Bot</li>
+              </ul>
+            </div>
+          )}
+        </div>
 
         {/* + Add New Button */}
         <button
           type="button"
-          className="bg-[#FF9F43] hover:bg-[#F28C28] text-white px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+          onClick={onOpenAddVehicle}
+          className="bg-[#FF9F43] hover:bg-[#F28C28] text-white px-3 sm:px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+          title="Add New Vehicle"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>Add New</span>
+          <span className="hidden sm:inline">Add New</span>
         </button>
 
         {/* POS Button */}
         <button
           type="button"
-          className="bg-[#131825] hover:bg-black text-white px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+          onClick={onOpenPOS}
+          className="bg-[#131825] hover:bg-black text-white px-3 sm:px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+          title="Open POS Terminal"
         >
           <Monitor className="w-4 h-4" />
           <span>POS</span>
@@ -86,15 +118,6 @@ export function Header({ onToggleSidebar }: HeaderProps) {
 
         {/* Divider */}
         <div className="h-6 w-px bg-gray-200 hidden sm:block" />
-
-        {/* Language: US Flag */}
-        <button
-          type="button"
-          className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-sm transition-colors"
-          title="Change Language"
-        >
-          🇺🇸
-        </button>
 
         {/* Fullscreen */}
         <button
@@ -106,50 +129,56 @@ export function Header({ onToggleSidebar }: HeaderProps) {
               document.exitFullscreen().catch(() => {});
             }
           }}
-          className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
-          title="Fullscreen"
+          className="hidden sm:flex w-8 h-8 rounded-lg hover:bg-gray-100 items-center justify-center text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
+          title="Toggle Fullscreen"
         >
           <Maximize2 className="w-4 h-4" />
         </button>
 
-        {/* Email Notification with 01 Badge */}
+        {/* Bell / Notifications */}
         <div className="relative">
           <button
             type="button"
-            className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
-            title="Messages"
+            onClick={() => setShowNotifications(!showNotifications)}
+            className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
+            title="Notifications"
           >
-            <Mail className="w-4 h-4" />
+            <Bell className="w-4 h-4" />
           </button>
-          <span className="absolute -top-0.5 -right-0.5 bg-[#EA5455] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-xs">
-            01
-          </span>
+          {notificationCount > 0 && (
+            <span className="absolute -top-0.5 -right-0.5 bg-[#EA5455] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-xs">
+              0{notificationCount}
+            </span>
+          )}
+
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2">
+                <p className="text-xs font-bold text-gray-900">Notifications</p>
+                <span className="text-[10px] bg-[#28C76F]/10 text-[#28C76F] font-bold px-2 py-0.5 rounded-full">
+                  1 New
+                </span>
+              </div>
+              <div className="space-y-2 text-xs">
+                <div className="p-2.5 bg-gray-50 rounded-xl border border-gray-100 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[#28C76F] font-bold text-[11px]">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>New Booking Received</span>
+                  </div>
+                  <p className="text-gray-600 text-[11px]">Mike Witzel reserved Range Rover Velar for $1040.00</p>
+                  <p className="text-[9px] text-gray-400">15 mins ago • Auto-dispatched</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Bell Notification */}
-        <button
-          type="button"
-          className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
-          title="Notifications"
-        >
-          <Bell className="w-4 h-4" />
-        </button>
-
-        {/* Settings */}
-        <button
-          type="button"
-          className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
-          title="Settings"
-        >
-          <Settings className="w-4 h-4" />
-        </button>
 
         {/* User Profile Avatar */}
         <div className="relative ml-1">
           <button
             type="button"
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none"
+            className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none cursor-pointer"
           >
             <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-gray-200">
               <Image
@@ -177,12 +206,6 @@ export function Header({ onToggleSidebar }: HeaderProps) {
                 <span>Live Customer Site</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-gray-400" />
               </Link>
-              <button
-                type="button"
-                className="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"
-              >
-                Sign Out
-              </button>
             </div>
           )}
         </div>

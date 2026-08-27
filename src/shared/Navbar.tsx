@@ -32,6 +32,18 @@ export function Navbar() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Sync current user from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem('bestauto_current_user');
+      if (savedUser) {
+        setCurrentUser(JSON.parse(savedUser));
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
+
   // Clear timeout on unmount
   useEffect(() => () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -132,20 +144,18 @@ export function Navbar() {
                 </div>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    onClick={() => openAuth('register')}
-                    className="text-sm xl:text-base font-medium text-[#4b5563] hover:text-[#131825] cursor-pointer transition-colors"
+                  <Link
+                    href="/register"
+                    className="text-sm xl:text-base font-medium text-[#4b5563] hover:text-[#131825] transition-colors"
                   >
                     Register
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => openAuth('login')}
-                    className="bg-white text-[#131825] px-6 py-2.5 rounded-[4px] font-semibold text-sm xl:text-base shadow-sm hover:shadow-md hover:bg-gray-50 active:scale-95 cursor-pointer transition-all duration-200 border border-black/5"
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="bg-white text-[#131825] px-6 py-2.5 rounded-[4px] font-semibold text-sm xl:text-base shadow-sm hover:shadow-md hover:bg-gray-50 active:scale-95 transition-all duration-200 border border-black/5"
                   >
                     Log In
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
@@ -266,20 +276,20 @@ export function Navbar() {
             </div>
           ) : (
             <div className="space-y-2">
-              <button
-                type="button"
-                onClick={() => openAuth('register')}
-                className="w-full py-2.5 rounded-[4px] font-semibold text-sm text-[#131825] hover:bg-white/40 transition-colors cursor-pointer"
+              <Link
+                href="/register"
+                onClick={() => setIsOpen(false)}
+                className="block text-center w-full py-2.5 rounded-[4px] font-semibold text-sm text-[#131825] hover:bg-white/40 transition-colors"
               >
                 Register
-              </button>
-              <button
-                type="button"
-                onClick={() => openAuth('login')}
-                className="w-full bg-white text-[#131825] py-2.5 rounded-[4px] font-bold text-sm shadow-sm hover:shadow hover:bg-gray-50 active:scale-95 transition-all border border-black/5 cursor-pointer"
+              </Link>
+              <Link
+                href="/login"
+                onClick={() => setIsOpen(false)}
+                className="block text-center w-full bg-white text-[#131825] py-2.5 rounded-[4px] font-bold text-sm shadow-sm hover:shadow hover:bg-gray-50 active:scale-95 transition-all border border-black/5"
               >
                 Log In
-              </button>
+              </Link>
             </div>
           )}
         </div>
