@@ -8,9 +8,9 @@ export default function CustomerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
