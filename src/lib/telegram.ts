@@ -53,24 +53,60 @@ ${payload.notes ? `📝 *Notes:* _${payload.notes}_\n` : ''}
 
   if (isRealBotConfigured) {
     try {
-      console.log(`[Telegram Bot] Sending live alert to chat ${chatId}...`);
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: 'Markdown',
-        }),
+      // 1. Parse all configured chat IDs (supports comma-separated list or group chat IDs)
+      const targetChatIds = new Set<string>();
+      chatId
+        .split(',')
+        .map((id) => id.trim())
+        .filter(Boolean)
+        .forEach((id) => targetChatIds.add(id));
+
+      // 2. Dynamically discover any other users who sent /start to the bot via getUpdates
+      try {
+        const updatesRes = await fetch(`https://api.telegram.org/bot${botToken}/getUpdates?limit=50&timeout=2`);
+        const updatesData = await updatesRes.json();
+        if (updatesData.ok && Array.isArray(updatesData.result)) {
+          updatesData.result.forEach((update: any) => {
+            const updateChatId = update?.message?.chat?.id || update?.channel_post?.chat?.id;
+            if (updateChatId) {
+              targetChatIds.add(String(updateChatId));
+            }
+          });
+        }
+      } catch (discErr) {
+        console.warn('[Telegram Bot] Subscriber discovery notice:', discErr);
+      }
+
+      console.log(`[Telegram Bot] Broadcasting live alert to ${targetChatIds.size} recipient(s)...`);
+
+      // 3. Dispatch to all recipient chats concurrently
+      const sendPromises = Array.from(targetChatIds).map(async (targetId) => {
+        try {
+          const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: targetId,
+              text: message,
+              parse_mode: 'Markdown',
+            }),
+          });
+          const resData = await res.json();
+          return { chatId: targetId, ok: resData.ok, error: resData.description, messageId: resData.result?.message_id };
+        } catch (err: any) {
+          return { chatId: targetId, ok: false, error: err?.message || String(err) };
+        }
       });
 
-      const data = await response.json();
-      if (data.ok) {
-        console.log(`[Telegram Bot] Live message delivered successfully! ID: ${data.result?.message_id}`);
-        return { success: true, live: true, simulated: false, messageId: data.result?.message_id };
+      const results = await Promise.allSettled(sendPromises);
+      const successful = results.filter((r) => r.status === 'fulfilled' && r.value.ok);
+
+      if (successful.length > 0) {
+        console.log(`[Telegram Bot] Successfully delivered to ${successful.length}/${targetChatIds.size} recipient(s)!`);
+        return { success: true, live: true, simulated: false };
       } else {
-        console.warn('[Telegram Bot API Error]:', data.description);
-        return { success: false, live: false, simulated: false, error: data.description };
+        console.warn('[Telegram Bot Error] Failed delivering to any chat ID.');
+        return { success: false, live: false, simulated: false, error: 'Failed to deliver to configured chat IDs' };
       }
     } catch (err: any) {
       console.error('[Telegram Bot Network Error]:', err?.message || err);
