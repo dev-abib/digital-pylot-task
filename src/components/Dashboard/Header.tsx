@@ -205,11 +205,11 @@ export function Header({
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
                 <Link
-                  href="/vehicles"
+                  href="/"
                   onClick={() => setIsSearchFocused(false)}
                   className="text-[11px] text-gray-500 hover:text-gray-900"
                 >
-                  Customer Catalog ↗
+                  Live Storefront ↗
                 </Link>
               </div>
             </div>

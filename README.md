@@ -1,23 +1,22 @@
 # 🚗 Best Auto / LuxeDrive — Full-Stack Car Rental Platform, Operations Dashboard & AI Automation
 
-> **Repository Architecture**: Next.js 16 App Router (Customer Storefront + Modular Vehicle Catalog + Dynamic Operations Dashboard + AI Concierge + Live Telegram Automation)  
+> **Repository Architecture**: Next.js 16 App Router (Customer Storefront Landing Page + Executive Operations Dashboard + AI Concierge + Live Telegram Automation)  
 > **Design Specifications**: Pixel-Perfect Figma Implementation (`node-id=0-1` & `node-id=1-4856`)  
 > **Tech Stack**: Next.js 16 (Turbopack, React 19), Tailwind CSS v4, TypeScript, Lucide Icons, Telegram Bot API, OpenAI API  
 
 ---
 
-## 🌐 Live Demo & Repository
+## 🌐 Live Demo & Navigation Map
 
 - **Live Production URL**: `https://best-auto-car-rental.vercel.app` *(or custom domain assigned upon deployment)*
 - **Local Development URL**: `http://localhost:3000`
 - **Customer Storefront**: `http://localhost:3000/`
-- **Fleet Catalog & Search**: `http://localhost:3000/vehicles`
-- **Admin Dashboard**: `http://localhost:3000/admin` (Includes 1-click instant Admin Authorization)
-  - Fleet Inventory: `http://localhost:3000/admin/fleet`
+- **Executive Operations Dashboard**: `http://localhost:3000/admin` (Includes 1-click instant Admin Authorization)
+  - Fleet Inventory Management: `http://localhost:3000/admin/fleet`
   - Bookings Manifest: `http://localhost:3000/admin/bookings`
   - Inbound Leads CRM: `http://localhost:3000/admin/leads`
-  - Sales Analytics: `http://localhost:3000/admin/sales`
-  - Super Admin: `http://localhost:3000/admin/super-admin`
+  - Sales Analytics & World Map: `http://localhost:3000/admin/sales`
+  - Super Administrator: `http://localhost:3000/admin/super-admin`
   - Settings & Integrations: `http://localhost:3000/admin/settings`
 
 ---
@@ -27,20 +26,19 @@
 | Feature Domain | Status | Implementation Highlight |
 |---|---|---|
 | **UI/UX & Figma Implementation** | **100% Complete** | Pixel-perfect Figma reproduction (`#CBD0D8` hero, exact typography, `113px` gap, `Rectangle 23785` with `63px` radius, `#F3F3F3` search bar, custom icons, brand identity). |
-| **Search & Fleet Catalog Interface** | **100% Complete** | Dedicated **`/vehicles`** catalog page modularized into `VehicleCard` & `VehicleFilters` with live multi-attribute filtering (text search, categories, price range slider, seats, transmission, fuel) and sorting. |
-| **Dashboard Development & Functionality** | **100% Complete** | Dynamic dashboard with live API integration (`/api/dashboard/stats`), interactive timeframe selector (7d / 30d / 90d / 2024), live refresh states, spline area charts, world sales map, and collapsible sidebar. |
-| **Front-End Development & Responsiveness** | **100% Complete** | 100% mobile-friendly responsive layout: animated 3-bar morphing hamburger drawer, 2-column mobile car grid, smooth continuous testimonials slider with 4 pagination dots, and sticky glassmorphic navigation (`overflow-x-clip`). |
-| **AI Implementation** | **100% Complete** | Intelligent **AI Rental Concierge (`ChatBotWidget.tsx` & `/api/chat`)** dynamically resolving `OPENAI_MODEL` with fallback, grounded in UK rental policies and fleet inventory with interactive vehicle recommendation cards. |
-| **API & Automation Workflow** | **100% Complete** | **Automated Telegram lead pipeline (`/api/leads` & `src/lib/telegram.ts`)** that formats and dispatches instant Markdown reservation tickets to a live Telegram chat on customer booking with zero client secret exposure. |
-| **Code Quality & Problem Solving** | **100% Complete** | Modular component architecture, full TypeScript type-safety (`npx tsc --noEmit` clean with 0 errors), Next.js App Router patterns, and comprehensive documentation. |
+| **Front-End Development & Responsiveness** | **100% Complete** | 100% mobile-friendly responsive layout: animated 3-bar morphing hamburger drawer, 2-column mobile car grid, smooth continuous testimonials slider with 4 pagination dots, and sticky glassmorphic navigation. |
+| **Operations Dashboard & Controls** | **100% Complete** | Dedicated subpages for Fleet Inventory (with search, 5-way sorting, pagination, and dual Grid/Table view), Bookings Manifest, Leads CRM, Sales Analytics, and Express POS terminal. |
+| **AI Rental Concierge** | **100% Complete** | Intelligent **AI Concierge (`ChatBotWidget.tsx` & `/api/chat`)** dynamically resolving `OPENAI_MODEL` with fallback, grounded in UK rental policies and fleet inventory with interactive vehicle recommendation cards. |
+| **API & Telegram Automation** | **100% Complete** | **Automated Telegram lead pipeline (`/api/leads` & `src/lib/telegram.ts`)** that formats and dispatches instant Markdown reservation tickets to a live Telegram chat on customer booking with zero client secret exposure. |
+| **Code Quality & Type Safety** | **100% Complete** | Modular component architecture, full TypeScript type-safety (`npx tsc --noEmit` clean with 0 errors), Next.js App Router patterns, and comprehensive documentation. |
 
 ---
 
 ## 🌟 Core System Architecture & Features
 
-### 1. 🎨 Customer Front-End Portal (`/` & `/vehicles`)
+### 1. 🎨 Customer Front-End Portal (`/`)
 - **Navigation Bar (`src/shared/Navbar.tsx`)**:
-  - Desktop: Clean `#CBD0D8` header with `sticky top-0 z-50` backdrop blur, navigation links, `Fleet Catalog` link, `Log In` modal trigger, and direct `Dashboard` access.
+  - Desktop: Clean `#CBD0D8` header with `sticky top-0 z-50` backdrop blur, navigation links (`Home`, `How it Work`, `Rental Details`, `Why Choose Us`, `Testimonial`), and `Register` / `Log In` modal triggers matching the exact Figma specification.
   - Mobile: Animated 3-bar morphing hamburger with smooth slide-over 280px drawer, click-outside detection, and scroll lock.
 - **Hero Showcase (`src/components/Pages/Home/HomeHero.tsx`)**:
   - Exact Figma typography: 46px 800-weight uppercase heading, 14px 500-weight tagline, and 16px description wrapped in 3 lines.
@@ -50,15 +48,6 @@
   - `#F3F3F3` background sitting on `#F6F7F9` section strip.
   - Divided Pick-Up & Drop-Off sub-fields (`Locations`, `Date`, `Time`).
   - Search action immediately opens the booking reservation workflow with selected criteria pre-filled.
-- **Dedicated Fleet Catalog & Search Page (`/vehicles`)**:
-  - Modularized into `VehicleCard.tsx` and `VehicleFilters.tsx`.
-  - Full-text search across vehicle make, model, and category.
-  - Category selector (*Popular, Large Car, Small Car, Exclusive Car*).
-  - Price Range Slider ($40 to $550+/day) with real-time feedback.
-  - Capacity / Seat filter (*2 Seats, 4-5 Seats, 7-8 Seats*).
-  - Transmission filter (*Automatic, Manual*) and Fuel/Powertrain filter (*Gasoline, Diesel, Hybrid, Electric*).
-  - Sorting options: Price (Low to High / High to Low), Highest Rating, Popularity, Alphabetical.
-  - Wishlist toggles and instant "Rent Now" booking integration.
 - **How It Works (`src/components/Pages/Home/HowItWorks.tsx`)**:
   - 3-step rental flow with custom squircle icon badges and connecting curve paths.
 - **Promo Banners (`src/components/Pages/Home/PromoBanners.tsx`)**:
@@ -66,7 +55,7 @@
 - **Popular Car Deals (`src/components/Pages/Home/PopularDeals.tsx`)**:
   - 4 category tabs with horizontal scroll on mobile.
   - **Modern 2-column mobile grid** (`grid-cols-2 lg:grid-cols-4`) displaying 2 cars per row on phones.
-  - Wishlist toggle, real-time `Rent Now` modal trigger, and direct `Explore Full Fleet` link to `/vehicles`.
+  - Wishlist toggle, real-time `Rent Now` modal trigger, and direct `See all cars` anchor.
 - **Why Choose Us (`src/components/Pages/Home/WhyChooseUs.tsx`)**:
   - High-res vehicle showcase with feature badges on `#F3F3F3`.
 - **Testimonials Slider (`src/components/Pages/Home/Testimonials.tsx`)**:
@@ -80,7 +69,7 @@
 ### 2. 📊 Executive Operations Dashboard (`/admin`)
 - **Collapsible & Mobile Drawer Sidebar (`src/components/Dashboard/Sidebar.tsx`)**:
   - Brand identity `3Best Car` with red curve swoosh and collapse toggle (`«` / `»`).
-  - Navigation routes: `Dashboard`, `Fleet Inventory`, `Bookings Manifest`, `Leads & Inquiries`, `Sales Analytics`, `Super Admin`, and `Settings`.
+  - Clean nested routes: `Dashboard`, `Fleet Inventory`, `Bookings Manifest`, `Leads & Inquiries`, `Sales Analytics`, `Super Admin`, and `Settings`.
 - **Top Header (`src/components/Dashboard/Header.tsx`)**:
   - `sticky top-0 z-40` with glassmorphic `backdrop-blur-md`, real-time live autocomplete search with `⌘ K` hotkey, `+ Add New` vehicle CTA, `🖥 POS` walk-in terminal button, notification badges, fullscreen toggle, and profile menu.
 - **Greeting & Live Timeframe Bar (`src/components/Dashboard/GreetingBar.tsx`)**:
@@ -94,7 +83,7 @@
 - **Recent Transactions Table (`src/components/Dashboard/RecentTransactions.tsx`)**:
   - Filter by `All`, `Success`, `Pending`, `Cancelled` with transaction codes and amounts.
 - **Sales Analytics Area Spline Chart (`src/components/Dashboard/SalesAnalyticsChart.tsx`)**:
-  - Smooth SVG spline curve with orange gradient fill (`#FF9F43`), interactive node markers, hover tooltips, and year filter dropdown (`2023` / `2024`).
+  - Smooth SVG spline curve with orange gradient fill (`#FF9F43`), interactive node markers, hover tooltips, and timeframe filter.
 - **Sales by Countries World Map (`src/components/Dashboard/SalesByCountries.tsx`)**:
   - World vector map highlighting Africa in orange with `Africa | 3455 Sales` tooltip, North America & Asia in navy slate.
 - **Fleet Inventory Asset Register (`src/components/Dashboard/FleetView.tsx`)**:
@@ -181,8 +170,7 @@ c:\spl_features\prac\
 │   │   │
 │   │   ├── (customer)/                    # Customer Storefront Route Group
 │   │   │   ├── layout.tsx                 # Includes Navbar, Footer, and AI ChatBotWidget
-│   │   │   ├── page.tsx                   # Storefront Landing Page
-│   │   │   └── vehicles/page.tsx          # Modular Fleet Catalog Page
+│   │   │   └── page.tsx                   # Storefront Landing Page
 │   │   │
 │   │   ├── admin/                         # Executive Operations Dashboard
 │   │   │   ├── layout.tsx                 # DashboardContext provider, persistent sidebar, & header
@@ -231,17 +219,13 @@ c:\spl_features\prac\
 │   │   │   └── SuperAdminView.tsx         # System health & tenant controls
 │   │   │
 │   │   └── Pages/
-│   │       ├── Home/                      # Storefront Landing Sections
-│   │       │   ├── HomeHero.tsx           # Pixel-perfect Hero & Pick-up/Drop-off bar
-│   │       │   ├── HowItWorks.tsx         # 3-step rental flow
-│   │       │   ├── PopularDeals.tsx       # Category fleet showcase
-│   │       │   ├── PromoBanners.tsx       # 640x360 promotional cards
-│   │       │   ├── Testimonials.tsx       # Smooth continuous track slider (4 dots)
-│   │       │   └── WhyChooseUs.tsx        # Features & vehicle showcase
-│   │       │
-│   │       └── Vehicles/                  # Modular Catalog Components
-│   │           ├── VehicleCard.tsx        # Individual vehicle presentation card
-│   │           └── VehicleFilters.tsx     # Filter sidebar and mobile drawer controls
+│   │       └── Home/                      # Storefront Landing Sections
+│   │           ├── HomeHero.tsx           # Pixel-perfect Hero & Pick-up/Drop-off bar
+│   │           ├── HowItWorks.tsx         # 3-step rental flow
+│   │           ├── PopularDeals.tsx       # Category fleet showcase
+│   │           ├── PromoBanners.tsx       # 640x360 promotional cards
+│   │           ├── Testimonials.tsx       # Smooth continuous track slider (4 dots)
+│   │           └── WhyChooseUs.tsx        # Features & vehicle showcase
 │   │
 │   ├── data/
 │   │   └── mockData.ts                    # Parameterized fleet database (36+ cars) & reviews
@@ -292,7 +276,6 @@ c:\spl_features\prac\
 
 4. **Verify Application Routes**:
    - **Customer Storefront**: [`http://localhost:3000`](http://localhost:3000)
-   - **Vehicle Search & Catalog**: [`http://localhost:3000/vehicles`](http://localhost:3000/vehicles)
    - **Operations Admin Dashboard**: [`http://localhost:3000/admin`](http://localhost:3000/admin) or [`http://localhost:3000/dashboard`](http://localhost:3000/dashboard)
 
 5. **Run Quality & Verification Suite**:

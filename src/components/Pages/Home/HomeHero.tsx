@@ -114,7 +114,7 @@ export function HomeHero() {
                 </button>
 
                 <Link
-                  href="/vehicles"
+                  href="#popular-deals"
                   className="text-[#131825] font-bold text-sm sm:text-base hover:underline cursor-pointer transition-colors"
                 >
                   See all cars

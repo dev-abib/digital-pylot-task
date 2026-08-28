@@ -11,8 +11,6 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
-  { label: 'Fleet Catalog', href: '/vehicles' },
-  { label: 'Dashboard', href: '/admin' },
   { label: 'How it Work', href: '/#how-it-work' },
   { label: 'Rental Details', href: '/#rental-details' },
   { label: 'Why Choose Us', href: '/#why-choose-us' },
