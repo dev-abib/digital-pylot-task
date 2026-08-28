@@ -11,6 +11,7 @@
 - **Live Production URL**: `https://best-auto-car-rental.vercel.app` *(or custom domain assigned upon deployment)*
 - **Local Development URL**: `http://localhost:3000`
 - **Customer Storefront**: `http://localhost:3000/`
+- **Fleet Catalog & Vehicles Explorer**: `http://localhost:3000/vehicles`
 - **Executive Operations Dashboard**: `http://localhost:3000/admin` (Includes 1-click instant Admin Authorization)
   - Fleet Inventory Management: `http://localhost:3000/admin/fleet`
   - Bookings Manifest: `http://localhost:3000/admin/bookings`
@@ -170,7 +171,8 @@ c:\spl_features\prac\
 │   │   │
 │   │   ├── (customer)/                    # Customer Storefront Route Group
 │   │   │   ├── layout.tsx                 # Includes Navbar, Footer, and AI ChatBotWidget
-│   │   │   └── page.tsx                   # Storefront Landing Page
+│   │   │   ├── page.tsx                   # Storefront Landing Page
+│   │   │   └── vehicles/page.tsx          # Dedicated Fleet Explorer & Filter Page
 │   │   │
 │   │   ├── admin/                         # Executive Operations Dashboard
 │   │   │   ├── layout.tsx                 # DashboardContext provider, persistent sidebar, & header
@@ -219,13 +221,16 @@ c:\spl_features\prac\
 │   │   │   └── SuperAdminView.tsx         # System health & tenant controls
 │   │   │
 │   │   └── Pages/
-│   │       └── Home/                      # Storefront Landing Sections
-│   │           ├── HomeHero.tsx           # Pixel-perfect Hero & Pick-up/Drop-off bar
-│   │           ├── HowItWorks.tsx         # 3-step rental flow
-│   │           ├── PopularDeals.tsx       # Category fleet showcase
-│   │           ├── PromoBanners.tsx       # 640x360 promotional cards
-│   │           ├── Testimonials.tsx       # Smooth continuous track slider (4 dots)
-│   │           └── WhyChooseUs.tsx        # Features & vehicle showcase
+│   │       ├── Home/                      # Storefront Landing Sections
+│   │       │   ├── HomeHero.tsx           # Pixel-perfect Hero & Pick-up/Drop-off bar
+│   │       │   ├── HowItWorks.tsx         # 3-step rental flow
+│   │       │   ├── PopularDeals.tsx       # Category fleet showcase
+│   │       │   ├── PromoBanners.tsx       # 640x360 promotional cards
+│   │       │   ├── Testimonials.tsx       # Smooth continuous track slider (4 dots)
+│   │       │   └── WhyChooseUs.tsx        # Features & vehicle showcase
+│   │       │
+│   │       └── Vehicles/                  # Dedicated Fleet Catalog Components
+│   │           └── VehicleCard.tsx        # Standalone vehicle card item
 │   │
 │   ├── data/
 │   │   └── mockData.ts                    # Parameterized fleet database (36+ cars) & reviews
