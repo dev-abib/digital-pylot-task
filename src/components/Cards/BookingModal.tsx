@@ -20,6 +20,20 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
   const [customerEmail, setCustomerEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleClose = () => {
+    setIsSuccess(false);
+    onClose();
+  };
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   if (!isOpen || !car) return null;
 
   // Calculate rental duration in days
@@ -75,15 +89,13 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
     }
   };
 
-  const handleClose = () => {
-    setIsSuccess(false);
-    onClose();
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-jakarta animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-jakarta animate-in fade-in duration-200 cursor-pointer"
+      onClick={handleClose}
+    >
       <div 
-        className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

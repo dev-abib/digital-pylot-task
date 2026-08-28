@@ -15,6 +15,15 @@ export function AuthModal({ isOpen, initialMode, onClose, onSuccess }: AuthModal
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,9 +36,12 @@ export function AuthModal({ isOpen, initialMode, onClose, onSuccess }: AuthModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-jakarta animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs font-jakarta animate-in fade-in duration-200 cursor-pointer"
+      onClick={onClose}
+    >
       <div 
-        className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-7 border border-gray-100"
+        className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-7 border border-gray-100 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

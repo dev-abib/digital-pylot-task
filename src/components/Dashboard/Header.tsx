@@ -38,6 +38,34 @@ export function Header({
   const [showNotifications, setShowNotifications] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(false);
 
+  React.useEffect(() => {
+    if (!showUserMenu && !showNotifications && !showComingSoon) return;
+
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('header')) {
+        setShowUserMenu(false);
+        setShowNotifications(false);
+        setShowComingSoon(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowUserMenu(false);
+        setShowNotifications(false);
+        setShowComingSoon(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showUserMenu, showNotifications, showComingSoon]);
+
   return (
     <header className="h-16 bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 font-jakarta">
       {/* Left: Mobile Toggle & Global Search Bar */}
