@@ -270,7 +270,7 @@ export default function RegisterPage() {
                   className="w-4 h-4 mt-0.5 text-[#131825] rounded border-gray-300 focus:ring-0 cursor-pointer shrink-0"
                 />
                 <span className="text-xs text-gray-600 leading-normal">
-                  I agree to the rental terms and confirm I hold a valid driver's license.
+                  I agree to the rental terms and confirm I hold a valid driver&apos;s license.
                 </span>
               </label>
             </div>

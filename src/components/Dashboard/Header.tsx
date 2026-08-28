@@ -53,14 +53,14 @@ export function Header({
           </svg>
         </button>
 
-        <div className="relative w-48 sm:w-72 lg:w-96">
+        <div className="relative w-36 xs:w-48 sm:w-72 lg:w-96 min-w-0">
           <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange?.(e.target.value)}
             placeholder="Search fleet, bookings, or transactions..."
-            className="w-full bg-[#F8F9FA] border border-gray-200 rounded-lg pl-10 pr-10 sm:pr-12 py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF9F43]/20 focus:border-[#FF9F43] transition-all"
+            className="w-full bg-[#F8F9FA] border border-gray-200 rounded-lg pl-9 sm:pl-10 pr-4 sm:pr-12 py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF9F43]/20 focus:border-[#FF9F43] transition-all truncate"
           />
           <div className="hidden sm:block absolute right-2.5 top-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded px-1.5 py-0.5 text-[10px] font-semibold text-gray-400 shadow-2xs pointer-events-none">
             ⌘ K

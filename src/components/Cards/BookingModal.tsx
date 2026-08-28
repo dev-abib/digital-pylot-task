@@ -37,6 +37,7 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
     setIsSubmitting(true);
 
     try {
+      // 1. Post to Leads / Telegram automation pipeline
       await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,6 +51,20 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
           totalPrice,
           source: 'storefront_booking',
           notes: `Location: ${location}, Insurance: ${insurance ? 'Yes ($15/d Zero Excess)' : 'Standard'}`,
+        }),
+      });
+
+      // 2. Post to Bookings Manifest registry
+      await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: customerName || 'Valued Customer',
+          carName: car.name,
+          pickupDate,
+          returnDate,
+          totalPrice,
+          paymentMethod: 'Credit Card',
         }),
       });
     } catch (err) {

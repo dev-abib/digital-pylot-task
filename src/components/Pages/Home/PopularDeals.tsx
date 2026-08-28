@@ -2,6 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { MOCK_CARS, CarItem } from '@/data/mockData';
 import { BookingModal } from '@/components/Cards/BookingModal';
 
@@ -159,8 +161,8 @@ export function PopularDeals() {
           })}
         </div>
 
-        {/* Bottom Bar: Show More Car + Total Car Count */}
-        <div className="mt-8 sm:mt-12 lg:mt-16 flex flex-col sm:flex-row items-center justify-center relative gap-3">
+        {/* Bottom Bar: Show More Car + Explore Full Catalog + Total Car Count */}
+        <div className="mt-8 sm:mt-12 lg:mt-16 flex flex-col sm:flex-row items-center justify-center relative gap-3 sm:gap-4">
           <button
             type="button"
             onClick={handleShowMore}
@@ -168,6 +170,14 @@ export function PopularDeals() {
           >
             {visibleCount >= filteredCars.length ? 'Show less' : 'Show more car'}
           </button>
+
+          <Link
+            href={`/vehicles?category=${encodeURIComponent(activeTab)}`}
+            className="inline-flex items-center gap-1.5 bg-[#131825] text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-[4px] text-xs sm:text-sm font-semibold hover:bg-black active:scale-95 transition-all shadow-sm"
+          >
+            <span>Explore All {activeTab} Fleet</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
 
           <span className="sm:absolute sm:right-0 text-xs sm:text-sm font-medium text-[#6b7280]">
             120 Car

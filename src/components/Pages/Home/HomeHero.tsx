@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { MOCK_CARS, CarItem } from '@/data/mockData';
 import { BookingModal } from '@/components/Cards/BookingModal';
 
 export function HomeHero() {
+  const router = useRouter();
   const [selectedCarForBooking, setSelectedCarForBooking] = useState<CarItem | null>(null);
 
   // Search filter states
@@ -19,9 +21,11 @@ export function HomeHero() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const element = document.getElementById('rental-details');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    const query = pickupCity || dropoffCity || '';
+    if (query) {
+      router.push(`/vehicles?search=${encodeURIComponent(query)}`);
+    } else {
+      router.push('/vehicles');
     }
   };
 
@@ -106,7 +110,7 @@ export function HomeHero() {
                 </button>
 
                 <Link
-                  href="#rental-details"
+                  href="/vehicles"
                   className="text-[#131825] font-bold text-sm sm:text-base hover:underline cursor-pointer transition-colors"
                 >
                   See all cars

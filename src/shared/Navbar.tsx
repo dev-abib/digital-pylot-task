@@ -11,11 +11,12 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '/', isActive: true },
-  { label: 'How it Work', href: '#how-it-work' },
-  { label: 'Rental Details', href: '#rental-details' },
-  { label: 'Why Choose Us', href: '#why-choose-us' },
-  { label: 'Testimonial', href: '#testimonial' },
+  { label: 'Home', href: '/' },
+  { label: 'Fleet Catalog', href: '/vehicles' },
+  { label: 'How it Work', href: '/#how-it-work' },
+  { label: 'Rental Details', href: '/#rental-details' },
+  { label: 'Why Choose Us', href: '/#why-choose-us' },
+  { label: 'Testimonial', href: '/#testimonial' },
 ];
 
 export function Navbar() {
