@@ -19,8 +19,8 @@ export interface LeadPayload {
 export async function sendTelegramNotification(
   payload: LeadPayload
 ): Promise<{ success: boolean; simulated?: boolean; live?: boolean; error?: string; messageId?: number }> {
-  let botToken = (process.env.TELEGRAM_BOT_TOKEN || '').trim().replace(/^["']|["']$/g, '');
-  let chatId = (process.env.TELEGRAM_CHAT_ID || '').trim().replace(/^["']|["']$/g, '');
+  const botToken = (process.env.TELEGRAM_BOT_TOKEN || '').trim().replace(/^["']|["']$/g, '');
+  const chatId = (process.env.TELEGRAM_CHAT_ID || '').trim().replace(/^["']|["']$/g, '');
 
   const formattedDate = new Date().toLocaleString('en-GB', { timeZone: 'UTC' });
 

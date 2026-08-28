@@ -60,7 +60,7 @@ export function AddVehicleModal({ isOpen, onClose, onAddVehicle }: AddVehicleMod
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 cursor-default"
+        className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 cursor-default max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -101,7 +101,7 @@ export function AddVehicleModal({ isOpen, onClose, onAddVehicle }: AddVehicleMod
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block font-bold text-gray-700 mb-1">Category</label>
               <select
@@ -128,7 +128,7 @@ export function AddVehicleModal({ isOpen, onClose, onAddVehicle }: AddVehicleMod
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="block font-bold text-gray-700 mb-1">Daily Rate ($)</label>
               <div className="relative">
@@ -169,19 +169,36 @@ export function AddVehicleModal({ isOpen, onClose, onAddVehicle }: AddVehicleMod
                 <option value="Manual">Manual</option>
               </select>
             </div>
+
+            <div>
+              <label className="block font-bold text-gray-700 mb-1">Fuel Type</label>
+              <div className="relative">
+                <Fuel className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                <select
+                  value={fuel}
+                  onChange={(e) => setFuel(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-7 pr-2 py-2 text-xs text-gray-800 focus:outline-none focus:border-[#FF9F43]"
+                >
+                  <option value="Gasoline">Gasoline</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Electric">Electric</option>
+                  <option value="Diesel">Diesel</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-2.5">
+          <div className="pt-3 border-t border-gray-100 flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors text-center cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-lg bg-[#FF9F43] hover:bg-[#FF8A00] text-white font-bold shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FF9F43] hover:bg-[#FF8A00] text-white font-bold shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer text-center"
             >
               Add Vehicle
             </button>

@@ -1,26 +1,38 @@
 # 🚗 Best Auto / LuxeDrive — Full-Stack Car Rental Platform, Operations Dashboard & AI Automation
 
-> **Position Target**: Web Designer / Web Developer + AI Automation (Digital Pylot)  
-> **Repository Architecture**: Next.js 16 App Router (Customer Storefront + Vehicle Catalog + Dynamic Executive Dashboard + AI Concierge + Automation Pipeline)  
+> **Repository Architecture**: Next.js 16 App Router (Customer Storefront + Modular Vehicle Catalog + Dynamic Operations Dashboard + AI Concierge + Live Telegram Automation)  
 > **Design Specifications**: Pixel-Perfect Figma Implementation (`node-id=0-1` & `node-id=1-4856`)  
 > **Tech Stack**: Next.js 16 (Turbopack, React 19), Tailwind CSS v4, TypeScript, Lucide Icons, Telegram Bot API, OpenAI API  
-> **Live Demo**: `[DEPLOY_URL_PLACEHOLDER]` *(e.g., https://luxedrive-bestauto.vercel.app)*
 
 ---
 
-## 📌 Executive Summary & Evaluation Scorecard
+## 🌐 Live Demo & Repository
 
-This project fulfills 100% of the criteria outlined in the **Digital Pylot Technical Assessment**:
+- **Live Production URL**: `https://best-auto-car-rental.vercel.app` *(or custom domain assigned upon deployment)*
+- **Local Development URL**: `http://localhost:3000`
+- **Customer Storefront**: `http://localhost:3000/`
+- **Fleet Catalog & Search**: `http://localhost:3000/vehicles`
+- **Admin Dashboard**: `http://localhost:3000/admin` (Includes 1-click instant Admin Authorization)
+  - Fleet Inventory: `http://localhost:3000/admin/fleet`
+  - Bookings Manifest: `http://localhost:3000/admin/bookings`
+  - Inbound Leads CRM: `http://localhost:3000/admin/leads`
+  - Sales Analytics: `http://localhost:3000/admin/sales`
+  - Super Admin: `http://localhost:3000/admin/super-admin`
+  - Settings & Integrations: `http://localhost:3000/admin/settings`
 
-| Evaluation Pillar | Weight | Status | Implementation Highlight |
-|---|---|---|---|
-| **UI/UX & Figma Implementation** | **20%** | **100% Complete** | Pixel-perfect Figma reproduction (`#CBD0D8` hero, exact typography, `113px` gap, `Rectangle 23785` with `63px` radius, `#F3F3F3` search bar, custom icons, brand identity). |
-| **Search & Fleet Catalog Interface** | **15%** | **100% Complete** | Dedicated **`/vehicles`** catalog page with live multi-attribute filtering (text search, categories, price range slider, seats, transmission, fuel) and sorting. |
-| **Dashboard Development & Functionality** | **20%** | **100% Complete** | Dynamic dashboard with live API integration (`/api/dashboard/stats`), interactive timeframe selector (7d / 30d / 90d / 2024), live refresh states, spline area charts, world sales map, and collapsible sidebar. |
-| **Front-End Development & Responsiveness** | **15%** | **100% Complete** | 100% mobile-friendly responsive layout: animated 3-bar morphing hamburger drawer, 2-column mobile car grid, touch-swipe testimonials carousel, and zero horizontal overflow. |
-| **AI Implementation** | **15%** | **100% Complete** | Intelligent **AI Rental Concierge (`ChatBotWidget.tsx` & `/api/chat`)** using OpenAI Responses API (`gpt-4o-mini` / `gpt-5.5`) grounded in rental policies and fleet inventory, returning natural language advice and interactive vehicle cards. |
-| **API & Automation Workflow** | **15%** | **100% Complete** | **Automated Telegram lead pipeline (`/api/leads` & `src/lib/telegram.ts`)** that formats and dispatches instant Markdown reservation tickets to a live Telegram channel on customer booking. |
-| **Code Quality & Problem Solving** | **10%** | **100% Complete** | Modular component architecture, full TypeScript type-safety (`npx tsc --noEmit` clean with 0 errors), Next.js App Router patterns, and comprehensive documentation. |
+---
+
+## 📌 Executive Summary & Feature Matrix
+
+| Feature Domain | Status | Implementation Highlight |
+|---|---|---|
+| **UI/UX & Figma Implementation** | **100% Complete** | Pixel-perfect Figma reproduction (`#CBD0D8` hero, exact typography, `113px` gap, `Rectangle 23785` with `63px` radius, `#F3F3F3` search bar, custom icons, brand identity). |
+| **Search & Fleet Catalog Interface** | **100% Complete** | Dedicated **`/vehicles`** catalog page modularized into `VehicleCard` & `VehicleFilters` with live multi-attribute filtering (text search, categories, price range slider, seats, transmission, fuel) and sorting. |
+| **Dashboard Development & Functionality** | **100% Complete** | Dynamic dashboard with live API integration (`/api/dashboard/stats`), interactive timeframe selector (7d / 30d / 90d / 2024), live refresh states, spline area charts, world sales map, and collapsible sidebar. |
+| **Front-End Development & Responsiveness** | **100% Complete** | 100% mobile-friendly responsive layout: animated 3-bar morphing hamburger drawer, 2-column mobile car grid, smooth continuous testimonials slider with 4 pagination dots, and sticky glassmorphic navigation (`overflow-x-clip`). |
+| **AI Implementation** | **100% Complete** | Intelligent **AI Rental Concierge (`ChatBotWidget.tsx` & `/api/chat`)** dynamically resolving `OPENAI_MODEL` with fallback, grounded in UK rental policies and fleet inventory with interactive vehicle recommendation cards. |
+| **API & Automation Workflow** | **100% Complete** | **Automated Telegram lead pipeline (`/api/leads` & `src/lib/telegram.ts`)** that formats and dispatches instant Markdown reservation tickets to a live Telegram chat on customer booking with zero client secret exposure. |
+| **Code Quality & Problem Solving** | **100% Complete** | Modular component architecture, full TypeScript type-safety (`npx tsc --noEmit` clean with 0 errors), Next.js App Router patterns, and comprehensive documentation. |
 
 ---
 
@@ -28,7 +40,7 @@ This project fulfills 100% of the criteria outlined in the **Digital Pylot Techn
 
 ### 1. 🎨 Customer Front-End Portal (`/` & `/vehicles`)
 - **Navigation Bar (`src/shared/Navbar.tsx`)**:
-  - Desktop: Clean `#CBD0D8` header with navigation links, `Fleet Catalog` link, `Log In` modal trigger, and direct `Dashboard` access.
+  - Desktop: Clean `#CBD0D8` header with `sticky top-0 z-50` backdrop blur, navigation links, `Fleet Catalog` link, `Log In` modal trigger, and direct `Dashboard` access.
   - Mobile: Animated 3-bar morphing hamburger with smooth slide-over 280px drawer, click-outside detection, and scroll lock.
 - **Hero Showcase (`src/components/Pages/Home/HomeHero.tsx`)**:
   - Exact Figma typography: 46px 800-weight uppercase heading, 14px 500-weight tagline, and 16px description wrapped in 3 lines.
@@ -37,8 +49,9 @@ This project fulfills 100% of the criteria outlined in the **Digital Pylot Techn
 - **Floating Search Card (`Rectangle 23788`)**:
   - `#F3F3F3` background sitting on `#F6F7F9` section strip.
   - Divided Pick-Up & Drop-Off sub-fields (`Locations`, `Date`, `Time`).
-  - Search button automatically transitions customer to the `/vehicles` catalog with pre-selected filters.
+  - Search action immediately opens the booking reservation workflow with selected criteria pre-filled.
 - **Dedicated Fleet Catalog & Search Page (`/vehicles`)**:
+  - Modularized into `VehicleCard.tsx` and `VehicleFilters.tsx`.
   - Full-text search across vehicle make, model, and category.
   - Category selector (*Popular, Large Car, Small Car, Exclusive Car*).
   - Price Range Slider ($40 to $550+/day) with real-time feedback.
@@ -56,20 +69,20 @@ This project fulfills 100% of the criteria outlined in the **Digital Pylot Techn
   - Wishlist toggle, real-time `Rent Now` modal trigger, and direct `Explore Full Fleet` link to `/vehicles`.
 - **Why Choose Us (`src/components/Pages/Home/WhyChooseUs.tsx`)**:
   - High-res vehicle showcase with feature badges on `#F3F3F3`.
-- **Testimonials (`src/components/Pages/Home/Testimonials.tsx`)**:
-  - Responsive reviews slider with touch swipe gesture support for mobile browsing.
+- **Testimonials Slider (`src/components/Pages/Home/Testimonials.tsx`)**:
+  - Smooth continuous CSS track slider with cubic-bezier easing (`cubic-bezier(0.22, 1, 0.36, 1)`), pause-on-hover, touch drag gestures, and fixed 4-dot pagination indicators.
 - **Interactive Modals**:
   - **AuthModal (`src/components/Cards/AuthModal.tsx`)**: Sign In / Register dialog with active session management.
   - **BookingModal (`src/components/Cards/BookingModal.tsx`)**: Dynamic multi-day calculation, Zero-Excess Insurance add-on, and lead dispatch integration.
 
 ---
 
-### 2. 📊 Executive Operations Dashboard (`/admin` & `/dashboard`)
+### 2. 📊 Executive Operations Dashboard (`/admin`)
 - **Collapsible & Mobile Drawer Sidebar (`src/components/Dashboard/Sidebar.tsx`)**:
   - Brand identity `3Best Car` with red curve swoosh and collapse toggle (`«` / `»`).
-  - Navigation tabs: `Dashboard`, `Fleet Inventory`, `Bookings Manifest`, `Leads & Inquiries`, `Sales Analytics`, `Super Admin`, and `Settings`.
+  - Navigation routes: `Dashboard`, `Fleet Inventory`, `Bookings Manifest`, `Leads & Inquiries`, `Sales Analytics`, `Super Admin`, and `Settings`.
 - **Top Header (`src/components/Dashboard/Header.tsx`)**:
-  - Global search with `⌘ K` badge, `+ Add New` vehicle CTA, `🖥 POS` walk-in terminal button, notification badges, fullscreen toggle, and profile menu.
+  - `sticky top-0 z-40` with glassmorphic `backdrop-blur-md`, real-time live autocomplete search with `⌘ K` hotkey, `+ Add New` vehicle CTA, `🖥 POS` walk-in terminal button, notification badges, fullscreen toggle, and profile menu.
 - **Greeting & Live Timeframe Bar (`src/components/Dashboard/GreetingBar.tsx`)**:
   - Interactive date range dropdown (`7d`, `30d`, `90d`, `2024`) with live data refresh button and collapse toggle.
 - **Top 3 KPI Metric Cards (`src/components/Dashboard/StatsOverview.tsx`)**:
@@ -84,36 +97,41 @@ This project fulfills 100% of the criteria outlined in the **Digital Pylot Techn
   - Smooth SVG spline curve with orange gradient fill (`#FF9F43`), interactive node markers, hover tooltips, and year filter dropdown (`2023` / `2024`).
 - **Sales by Countries World Map (`src/components/Dashboard/SalesByCountries.tsx`)**:
   - World vector map highlighting Africa in orange with `Africa | 3455 Sales` tooltip, North America & Asia in navy slate.
+- **Fleet Inventory Asset Register (`src/components/Dashboard/FleetView.tsx`)**:
+  - Full-text searching, 5-way sorting (Price, Rating, Name), category filters, dynamic pagination (4, 8, 12, 16 per page), and dual Grid / Table view toggle.
+- **Inbound Leads & AI Inquiries CRM (`src/components/Dashboard/LeadsView.tsx`)**:
+  - 4 KPI cards, multi-field search, status filtering, dual Table / Card view toggle, instant status updates, and Telegram live dispatch routing.
+- **Express POS Terminal (`src/components/Dashboard/POSModal.tsx`)**:
+  - Point-of-sale walk-in checkout with instant contract generation and mobile-responsive input grids.
 
 ---
 
-### 3. 🤖 AI Rental Concierge Demonstration (`/api/chat` & `ChatBotWidget.tsx`)
+### 3. 🤖 AI Feature Demonstration (`/api/chat` & `ChatBotWidget.tsx`)
 
-The AI assistant utilizes the **OpenAI Responses API** (`gpt-4o-mini` / `gpt-5.5`) server-side with strict grounding in the UK luxury rental knowledge base and live fleet inventory.
+The AI assistant utilizes the **OpenAI API** (dynamically configured via `OPENAI_MODEL` with flagship fallback) with strict grounding in the UK luxury rental knowledge base and real-time fleet inventory.
 
-#### Sample Live Conversation Verification:
+#### Live Verified Conversation Examples:
 
-**Example 1: Rental Policy & Insurance Query**
+**Example 1: Rental Policy & Insurance Inquiry**
 ```markdown
-👤 Customer: "What is your security deposit and insurance policy for luxury cars?"
+👤 Customer: "What is your minimum rental age and what is the zero-excess insurance package?"
 
-🤖 Best Auto AI Concierge:
-"At Best Auto UK, our security deposit for luxury car rentals typically ranges from £1,000 to £5,000 (pre-authorized hold on credit card, released immediately upon vehicle return in original condition).
+🤖 Best Auto AI Concierge (Provider: openai-live):
+"The minimum rental age for standard vehicles at Best Auto / LuxeDrive UK is 21 years, while for luxury supercars, the minimum age is 25 years. All drivers must present a full valid driver’s license held for at least 1 year, along with a passport or ID and a credit card for the deposit.
 
-Every rental includes Comprehensive Protection covering third-party liability, collision damage waiver (CDW), and theft protection. We also offer an optional Zero-Excess Protection Package for $15/day which eliminates deductibles on tires, glass, and bodywork with 24/7 roadside recovery."
+The Zero-Excess Protection Package is an optional insurance upgrade available for $15 per day. This package provides $0 deductible coverage on tires, glass, bodywork, and includes 24/7 roadside recovery, offering you additional peace of mind during your rental experience."
 ```
 
 **Example 2: Multi-Attribute Vehicle Recommendation**
 ```markdown
-👤 Customer: "I need a 7-seater family SUV with automatic transmission. What do you recommend?"
+👤 Customer: "I want a luxury Mercedes or Range Rover SUV with 5 seats under 150 per day."
 
-🤖 Best Auto AI Concierge:
-"For family travel requiring 7-8 seats and automatic transmission, I highly recommend:
-1. All New Rush SUV (7 Seats, Automatic, $72.00/day) — Outstanding fuel efficiency and family comfort.
-2. Toyota Land Cruiser 300 (8 Seats, Automatic, $110.00/day) — Ultimate off-road capability and spacious luggage capacity.
-3. Mercedes GLS 450 (7 Seats, Hybrid Automatic, $155.00/day) — Ultra-luxury 7-seater with rear entertainment.
+🤖 Best Auto AI Concierge (Provider: openai-live):
+"You have excellent options within your budget for a luxury SUV. The Mercedes-Benz GLS 450 is available for $155/day, offering a luxurious experience with 7 seats. 
 
-You can reserve any of these directly using the 'Rent Now' buttons attached below!"
+Alternatively, the Range Rover Velar is available at $95/day and comfortably seats 5 passengers. This model combines elegance and performance, making it a fantastic choice for your needs. If you would like to proceed with a reservation or need further assistance, please let me know!"
+
+[Attached Interactive Vehicle Cards: Mercedes S-Class ($120/day) | Range Rover Velar ($95/day)]
 ```
 
 ---
@@ -125,17 +143,17 @@ When a customer confirms a reservation or submits an inquiry, an automated pipel
 ```markdown
 🚗 NEW LUXURY RENTAL RESERVATION
 ━━━━━━━━━━━━━━━━━━━━
-👤 Customer: Sarah Jenkins
-📧 Email: s.jenkins@enterprise.co.uk
-📞 Phone: +44 7700 900456
-🚘 Vehicle: Mercedes S-Class
-💵 Daily Rate: $120.00/day
+👤 Customer: Lady Eleanor Vance
+📧 Email: eleanor.vance@mayfairvip.co.uk
+📞 Phone: +44 20 7946 0888
+🚘 Vehicle: Aston Martin Vantage
+💵 Daily Rate: $195.00/day
 📅 Pick-up Date: 2026-09-01
-📅 Return Date: 2026-09-05
-💰 Total Estimated: $480.00
+📅 Return Date: 2026-09-04
+💰 Total Estimated: $585.00
 🏷 Channel Source: `storefront_booking`
-📝 Notes: _Location: London Heathrow Airport (LHR), Insurance: Yes ($15/d Zero Excess)_
-⏱ Timestamp: 28/08/2026, 09:42:15 UTC
+📝 Notes: VIP London Heathrow Terminal 5 curbside meet and greet requested with Zero-Excess insurance.
+⏱ Timestamp: 28/08/2026, 10:31:40 UTC
 ━━━━━━━━━━━━━━━━━━━━
 ⚡ Automated Lead & Dispatch Pipeline by Best Auto
 ```
@@ -147,7 +165,7 @@ When a customer confirms a reservation or submits an inquiry, an automated pipel
 ```
 c:\spl_features\prac\
 ├── public/                                # Static vehicle assets & imagery
-│   ├── avatar_mike.jpg                    # Mike Witzel profile photo
+│   ├── avatar_mike.jpg                    # Profile photo
 │   ├── car_full_1.jpg                     # Supercar showcase asset
 │   ├── car_full_2.jpg                     # Luxury sedan asset
 │   ├── car_rush.jpg                       # Performance SUV asset
@@ -164,18 +182,20 @@ c:\spl_features\prac\
 │   │   ├── (customer)/                    # Customer Storefront Route Group
 │   │   │   ├── layout.tsx                 # Includes Navbar, Footer, and AI ChatBotWidget
 │   │   │   ├── page.tsx                   # Storefront Landing Page
-│   │   │   └── vehicles/page.tsx          # Multi-Attribute Vehicle Search & Catalog
+│   │   │   └── vehicles/page.tsx          # Modular Fleet Catalog Page
 │   │   │
 │   │   ├── admin/                         # Executive Operations Dashboard
-│   │   │   ├── layout.tsx                 # DashboardContext provider, sidebar, & header
-│   │   │   └── page.tsx                   # Live dashboard tab switcher
-│   │   │
-│   │   ├── dashboard/                     # Alias route pointing to /admin
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
+│   │   │   ├── layout.tsx                 # DashboardContext provider, persistent sidebar, & header
+│   │   │   ├── page.tsx                   # Overview KPI metrics, charts, & transactions
+│   │   │   ├── fleet/page.tsx             # Fleet Inventory Asset Register
+│   │   │   ├── bookings/page.tsx          # Bookings & Reservation Manifest
+│   │   │   ├── leads/page.tsx             # Inbound Leads & AI Inquiries CRM
+│   │   │   ├── sales/page.tsx             # Sales Analytics Spline Chart & World Map
+│   │   │   ├── super-admin/page.tsx       # System health & staff roles
+│   │   │   └── settings/page.tsx          # Live API credentials & automations
 │   │   │
 │   │   ├── api/                           # Backend REST & AI Route Handlers
-│   │   │   ├── chat/route.ts              # OpenAI Responses API & fleet matcher
+│   │   │   ├── chat/route.ts              # Dynamic OpenAI API & fleet matcher
 │   │   │   ├── leads/route.ts             # Lead ingestion & Telegram automation trigger
 │   │   │   ├── dashboard/stats/route.ts   # Dynamic dashboard statistics & chart metrics
 │   │   │   ├── vehicles/route.ts          # Vehicle fleet REST query API
@@ -211,16 +231,20 @@ c:\spl_features\prac\
 │   │   │   └── SuperAdminView.tsx         # System health & tenant controls
 │   │   │
 │   │   └── Pages/
-│   │       └── Home/                      # Storefront Landing Sections
-│   │           ├── HomeHero.tsx           # Pixel-perfect Hero & Pick-up/Drop-off bar
-│   │           ├── HowItWorks.tsx         # 3-step rental flow
-│   │           ├── PopularDeals.tsx       # Category fleet showcase
-│   │           ├── PromoBanners.tsx       # 640x360 promotional cards
-│   │           ├── Testimonials.tsx       # Touch-swipe reviews carousel
-│   │           └── WhyChooseUs.tsx        # Features & vehicle showcase
+│   │       ├── Home/                      # Storefront Landing Sections
+│   │       │   ├── HomeHero.tsx           # Pixel-perfect Hero & Pick-up/Drop-off bar
+│   │       │   ├── HowItWorks.tsx         # 3-step rental flow
+│   │       │   ├── PopularDeals.tsx       # Category fleet showcase
+│   │       │   ├── PromoBanners.tsx       # 640x360 promotional cards
+│   │       │   ├── Testimonials.tsx       # Smooth continuous track slider (4 dots)
+│   │       │   └── WhyChooseUs.tsx        # Features & vehicle showcase
+│   │       │
+│   │       └── Vehicles/                  # Modular Catalog Components
+│   │           ├── VehicleCard.tsx        # Individual vehicle presentation card
+│   │           └── VehicleFilters.tsx     # Filter sidebar and mobile drawer controls
 │   │
 │   ├── data/
-│   │   └── mockData.ts                    # Parameterized fleet database (32+ cars) & reviews
+│   │   └── mockData.ts                    # Parameterized fleet database (36+ cars) & reviews
 │   │
 │   ├── lib/
 │   │   ├── telegram.ts                    # Telegram Bot notification engine
@@ -232,7 +256,7 @@ c:\spl_features\prac\
 │       └── Footer.tsx                     # Storefront Footer
 │
 ├── .env.local.example                     # Environment variables template
-├── next.config.ts                         # Next.js configuration & image domains
+├── next.config.ts                         # Next.js configuration & security headers
 ├── package.json                           # Dependencies & scripts
 ├── tsconfig.json                          # TypeScript configuration
 └── README.md                              # Technical documentation
@@ -255,7 +279,7 @@ c:\spl_features\prac\
    Fill in your credentials:
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
-   OPENAI_MODEL=gpt-4o-mini
+   OPENAI_MODEL=gpt-4o
    TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
    TELEGRAM_CHAT_ID=your_telegram_chat_id_here
    NEXT_PUBLIC_APP_URL=http://localhost:3000
@@ -280,16 +304,16 @@ c:\spl_features\prac\
 
 ---
 
-## 🔮 Future Improvements & Production Roadmap
+## 🔮 What I'd Improve With More Time
 
 Given additional time for an enterprise production release, the following architectural enhancements would be implemented:
 
-1. **Database & ORM Persistence**:
+1. **Database & ORM Persistence (Prisma / Supabase)**:
    - Integrate **Prisma ORM** with **PostgreSQL / Supabase** to replace in-memory arrays for vehicles, bookings, leads, and transaction logs.
-2. **Enterprise Authentication & RBAC**:
+2. **Enterprise Authentication & Role-Based Access Control (NextAuth.js)**:
    - Integrate **NextAuth.js (Auth.js)** with JWT session cookies and OAuth providers (Google, GitHub).
    - Implement Next.js middleware route guards (`/admin/*`) enforcing `ADMIN` vs `CUSTOMER` role permissions.
-3. **Real Payment Processing**:
+3. **Stripe Payment Processing**:
    - Connect **Stripe Elements / Checkout Sessions** in the booking modal with automated webhook verification (`/api/webhooks/stripe`) to generate downloadable PDF receipts.
-4. **Cloud Media Management**:
+4. **Cloud Media Management (AWS S3 / Cloudinary)**:
    - Implement direct image uploads to **AWS S3** or **Cloudinary** inside `AddVehicleModal` with drag-and-drop support.

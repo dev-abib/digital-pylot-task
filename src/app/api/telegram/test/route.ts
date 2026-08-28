@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
 import { sendTelegramNotification } from '@/lib/telegram';
 
-export async function POST(req: Request) {
+export async function GET() {
+  return handleTest();
+}
+
+export async function POST() {
+  return handleTest();
+}
+
+async function handleTest() {
   try {
     const result = await sendTelegramNotification({
       customerName: 'Test Booking Operator',

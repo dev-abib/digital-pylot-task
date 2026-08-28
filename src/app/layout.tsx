@@ -15,8 +15,20 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: 'Best Auto - Web-Based Car Rental System',
-  description: 'A high-performing web-based car rental system for any rent-a-car company and website.',
+  title: 'Best Auto — Luxury Car Rental & Fleet Operations Platform',
+  description: 'Enterprise-grade web-based car rental platform, live operations dashboard, 24/7 AI Concierge, and automated lead dispatch.',
+  keywords: ['car rental', 'luxury cars', 'fleet management', 'car booking', 'best auto', 'luxedrive'],
+  authors: [{ name: 'Best Auto Engineering Team' }],
+  openGraph: {
+    title: 'Best Auto — Luxury Car Rental Platform',
+    description: 'Book executive and luxury cars with Zero-Excess protection and 24/7 AI concierge assistance.',
+    type: 'website',
+    locale: 'en_GB',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

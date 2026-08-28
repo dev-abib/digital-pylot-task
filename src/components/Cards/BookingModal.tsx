@@ -8,22 +8,38 @@ interface BookingModalProps {
   car: CarItem | null;
   isOpen: boolean;
   onClose: () => void;
+  initialPickupDate?: string;
+  initialReturnDate?: string;
+  initialLocation?: string;
 }
 
-export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
-  const [pickupDate, setPickupDate] = useState('2026-09-01');
-  const [returnDate, setReturnDate] = useState('2026-09-04');
-  const [location, setLocation] = useState('London Heathrow Airport (LHR)');
+export function BookingModal({
+  car,
+  isOpen,
+  onClose,
+  initialPickupDate = '2026-09-01',
+  initialReturnDate = '2026-09-04',
+  initialLocation = 'London Heathrow Airport (LHR)',
+}: BookingModalProps) {
+  const [pickupDate, setPickupDate] = useState(initialPickupDate);
+  const [returnDate, setReturnDate] = useState(initialReturnDate);
+  const [location, setLocation] = useState(initialLocation);
   const [insurance, setInsurance] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleClose = () => {
+  React.useEffect(() => {
+    if (initialPickupDate) setPickupDate(initialPickupDate);
+    if (initialReturnDate) setReturnDate(initialReturnDate);
+    if (initialLocation) setLocation(initialLocation);
+  }, [initialPickupDate, initialReturnDate, initialLocation, isOpen]);
+
+  const handleClose = React.useCallback(() => {
     setIsSuccess(false);
     onClose();
-  };
+  }, [onClose]);
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -32,7 +48,7 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   if (!isOpen || !car) return null;
 
@@ -294,9 +310,10 @@ export function BookingModal({ car, isOpen, onClose }: BookingModalProps) {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-[#131825] text-white py-3.5 rounded-[4px] font-bold hover:bg-black active:scale-98 cursor-pointer transition-all shadow-md"
+                disabled={isSubmitting}
+                className="w-full bg-[#131825] text-white py-3.5 rounded-xl font-bold hover:bg-black active:scale-98 cursor-pointer transition-all shadow-md disabled:opacity-60 text-xs sm:text-sm"
               >
-                Confirm &amp; Book Now (${totalPrice.toFixed(2)})
+                {isSubmitting ? 'Processing Reservation...' : `Confirm & Book Now ($${totalPrice.toFixed(2)})`}
               </button>
             </form>
           )}

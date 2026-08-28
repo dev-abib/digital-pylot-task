@@ -1,19 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { MOCK_CARS } from '@/data/mockData';
 import {
   Search,
   Plus,
   Monitor,
   Maximize2,
   Bell,
-  ChevronDown,
-  Cloud,
   ArrowUpRight,
   CheckCircle2,
+  X,
+  Car,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -34,19 +35,44 @@ export function Header({
   notificationCount = 1,
 }: HeaderProps) {
   const router = useRouter();
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  // Keyboard shortcut Cmd/Ctrl + K to focus search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Filter cars live for the search dropdown
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return MOCK_CARS.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) ||
+        c.type.toLowerCase().includes(q) ||
+        c.category.toLowerCase().includes(q)
+    ).slice(0, 5);
+  }, [searchQuery]);
 
   React.useEffect(() => {
-    if (!showUserMenu && !showNotifications && !showComingSoon) return;
+    if (!showUserMenu && !showNotifications && !isSearchFocused) return;
 
     const handleOutsideClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target.closest('header')) {
         setShowUserMenu(false);
         setShowNotifications(false);
-        setShowComingSoon(false);
+        setIsSearchFocused(false);
       }
     };
 
@@ -54,7 +80,7 @@ export function Header({
       if (e.key === 'Escape') {
         setShowUserMenu(false);
         setShowNotifications(false);
-        setShowComingSoon(false);
+        setIsSearchFocused(false);
       }
     };
 
@@ -64,16 +90,22 @@ export function Header({
       document.removeEventListener('mousedown', handleOutsideClick);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showUserMenu, showNotifications, showComingSoon]);
+  }, [showUserMenu, showNotifications, isSearchFocused]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSearchFocused(false);
+    router.push('/admin/fleet');
+  };
 
   return (
-    <header className="h-16 bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 font-jakarta">
+    <header className="h-16 bg-white/95 backdrop-blur-md border-b border-gray-100 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-40 font-jakarta w-full max-w-full shadow-2xs">
       {/* Left: Mobile Toggle & Global Search Bar */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 relative">
         <button
           type="button"
           onClick={onToggleSidebar}
-          className="lg:hidden w-8 h-8 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 flex items-center justify-center transition-colors cursor-pointer"
+          className="lg:hidden w-8 h-8 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 flex items-center justify-center transition-colors cursor-pointer shrink-0"
           title="Open Menu"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,67 +113,132 @@ export function Header({
           </svg>
         </button>
 
-        <div className="relative w-36 xs:w-48 sm:w-72 lg:w-96 min-w-0">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <form onSubmit={handleSearchSubmit} className="relative flex-1 sm:w-80 lg:w-96 min-w-0 max-w-[220px] xs:max-w-[260px] sm:max-w-none">
+          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 shrink-0 pointer-events-none" />
           <input
+            ref={searchInputRef}
             type="text"
             value={searchQuery}
-            onChange={(e) => onSearchChange?.(e.target.value)}
-            placeholder="Search fleet, bookings, or transactions..."
-            className="w-full bg-[#F8F9FA] border border-gray-200 rounded-lg pl-9 sm:pl-10 pr-4 sm:pr-12 py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF9F43]/20 focus:border-[#FF9F43] transition-all truncate"
+            onChange={(e) => {
+              onSearchChange?.(e.target.value);
+              setIsSearchFocused(true);
+            }}
+            onFocus={() => setIsSearchFocused(true)}
+            placeholder="Search fleet (Press ⌘K)..."
+            className="w-full bg-[#F8F9FA] border border-gray-200 rounded-lg pl-8 sm:pl-10 pr-8 sm:pr-12 py-1.5 sm:py-2 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF9F43]/20 focus:border-[#FF9F43] transition-all truncate"
           />
-          <div className="hidden sm:block absolute right-2.5 top-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded px-1.5 py-0.5 text-[10px] font-semibold text-gray-400 shadow-2xs pointer-events-none">
-            ⌘ K
-          </div>
-        </div>
+          {searchQuery ? (
+            <button
+              type="button"
+              onClick={() => {
+                onSearchChange?.('');
+                setIsSearchFocused(false);
+              }}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-gray-200 text-gray-400 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          ) : (
+            <div className="hidden sm:block absolute right-2.5 top-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded px-1.5 py-0.5 text-[10px] font-semibold text-gray-400 shadow-2xs pointer-events-none">
+              ⌘ K
+            </div>
+          )}
+
+          {/* Live Search Autocomplete Results Dropdown */}
+          {isSearchFocused && searchQuery.trim().length > 0 && (
+            <div className="fixed left-3 right-3 top-[68px] sm:absolute sm:left-0 sm:right-auto sm:top-full sm:mt-1.5 sm:w-[380px] bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 z-50 animate-in fade-in slide-in-from-top-1 duration-150 font-jakarta">
+              <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2">
+                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                  Matching Vehicles ({searchResults.length})
+                </span>
+                <span className="text-[10px] text-[#FF8A00] font-semibold">Press Enter for Fleet</span>
+              </div>
+
+              {searchResults.length === 0 ? (
+                <div className="py-4 text-center text-xs text-gray-500">
+                  <p>No vehicles found for &ldquo;{searchQuery}&rdquo;</p>
+                  <p className="text-[10px] text-gray-400 mt-1">Try searching &ldquo;Mercedes&rdquo;, &ldquo;SUV&rdquo;, or &ldquo;Tesla&rdquo;</p>
+                </div>
+              ) : (
+                <div className="space-y-1.5 max-h-72 overflow-y-auto">
+                  {searchResults.map((car) => (
+                    <Link
+                      key={car.id}
+                      href="/admin/fleet"
+                      onClick={() => setIsSearchFocused(false)}
+                      className="flex items-center justify-between p-2 rounded-xl hover:bg-[#FFF4EC]/60 transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-9 h-7 rounded-lg overflow-hidden bg-gray-100 relative shrink-0 border border-gray-100">
+                          {car.image ? (
+                            <Image src={car.image} alt={car.name} fill className="object-cover" sizes="36px" />
+                          ) : (
+                            <Car className="w-4 h-4 text-gray-400 m-auto" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-gray-900 truncate group-hover:text-[#FF8A00] transition-colors">
+                            {car.name}
+                          </p>
+                          <p className="text-[10px] text-gray-400">{car.type} • {car.seats} Seats</p>
+                        </div>
+                      </div>
+
+                      <div className="text-right shrink-0 ml-2">
+                        <p className="text-xs font-bold text-[#131825]">${car.price}<span className="text-[10px] text-gray-400 font-normal">/d</span></p>
+                        <span className="text-[9px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded font-semibold">
+                          {car.category}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              <div className="pt-2 border-t border-gray-100 mt-2 flex items-center justify-between">
+                <Link
+                  href="/admin/fleet"
+                  onClick={() => setIsSearchFocused(false)}
+                  className="text-xs font-bold text-[#FF8A00] hover:underline flex items-center gap-1"
+                >
+                  <span>Open Full Fleet Inventory</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/vehicles"
+                  onClick={() => setIsSearchFocused(false)}
+                  className="text-[11px] text-gray-500 hover:text-gray-900"
+                >
+                  Customer Catalog ↗
+                </Link>
+              </div>
+            </div>
+          )}
+        </form>
       </div>
 
       {/* Right Actions Toolbar */}
-      <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-4">
-        {/* Coming Soon Dropdown */}
-        <div className="relative hidden sm:block">
-          <button
-            type="button"
-            onClick={() => setShowComingSoon(!showComingSoon)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
-          >
-            <Cloud className="w-3.5 h-3.5 text-gray-500" />
-            <span>Coming Soon</span>
-            <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
-          </button>
-
-          {showComingSoon && (
-            <div className="absolute right-0 mt-1.5 w-48 bg-white border border-gray-200 rounded-xl shadow-xl p-3 z-40 text-xs animate-in fade-in zoom-in-95 duration-150">
-              <p className="font-bold text-gray-900">Upcoming Features</p>
-              <ul className="mt-2 space-y-1.5 text-gray-500 text-[11px]">
-                <li className="flex items-center gap-1.5">⚡ AI Telematics Live GPS</li>
-                <li className="flex items-center gap-1.5">💳 Stripe Auto-Invoicing</li>
-                <li className="flex items-center gap-1.5">📲 SMS Notification Bot</li>
-              </ul>
-            </div>
-          )}
-        </div>
-
+      <div className="flex items-center gap-1.5 sm:gap-3 lg:gap-4 shrink-0 ml-2">
         {/* + Add New Button */}
         <button
           type="button"
           onClick={onOpenAddVehicle}
-          className="bg-[#FF9F43] hover:bg-[#F28C28] text-white px-3 sm:px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+          className="bg-[#FF9F43] hover:bg-[#F28C28] text-white p-2 sm:px-3.5 sm:py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer shrink-0"
           title="Add New Vehicle"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span className="hidden sm:inline">Add New</span>
+          <span className="hidden md:inline">Add New</span>
         </button>
 
         {/* POS Button */}
         <button
           type="button"
           onClick={onOpenPOS}
-          className="bg-[#131825] hover:bg-black text-white px-3 sm:px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+          className="bg-[#131825] hover:bg-black text-white p-2 sm:px-3.5 sm:py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer shrink-0"
           title="Open POS Terminal"
         >
           <Monitor className="w-4 h-4" />
-          <span>POS</span>
+          <span className="hidden xs:inline">POS</span>
         </button>
 
         {/* Divider */}
@@ -157,7 +254,7 @@ export function Header({
               document.exitFullscreen().catch(() => {});
             }
           }}
-          className="hidden sm:flex w-8 h-8 rounded-lg hover:bg-gray-100 items-center justify-center text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
+          className="hidden sm:flex w-8 h-8 rounded-lg hover:bg-gray-100 items-center justify-center text-gray-500 hover:text-gray-900 transition-colors cursor-pointer shrink-0"
           title="Toggle Fullscreen"
         >
           <Maximize2 className="w-4 h-4" />

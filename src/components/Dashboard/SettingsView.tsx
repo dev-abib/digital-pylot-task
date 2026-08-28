@@ -158,16 +158,16 @@ export function SettingsView() {
   };
 
   return (
-    <div className="space-y-6 font-jakarta max-w-4xl">
+    <div className="space-y-6 font-jakarta w-full">
       {/* Header */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-[#FFF4EC] text-[#FF8A00] flex items-center justify-center shadow-xs">
-            <Settings className="w-6 h-6" />
+        <div className="flex items-center gap-3.5 min-w-0">
+          <div className="w-11 h-11 min-w-[44px] min-h-[44px] aspect-square rounded-2xl bg-[#FFF4EC] text-[#FF8A00] flex items-center justify-center shadow-xs shrink-0">
+            <Settings className="w-5 h-5 shrink-0" />
           </div>
-          <div>
-            <h2 className="text-lg font-bold text-gray-900">Platform &amp; Business Settings</h2>
-            <p className="text-xs text-gray-500">
+          <div className="min-w-0">
+            <h2 className="text-lg font-bold text-gray-900 leading-tight">Platform &amp; Business Settings</h2>
+            <p className="text-xs text-gray-500 mt-0.5">
               Configure rental parameters, currencies, taxes, and live API automation credentials
             </p>
           </div>
@@ -321,12 +321,12 @@ export function SettingsView() {
 
           {/* Telegram Bot Settings */}
           <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200 space-y-3 text-xs">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#0088cc]" />
+                <Send className="w-4 h-4 text-[#0088cc] shrink-0" />
                 <span className="font-bold text-gray-900">Telegram Bot Notifications</span>
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#0088cc]">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#0088cc] w-fit">
                 {telegramStatus}
               </span>
             </div>
@@ -355,15 +355,15 @@ export function SettingsView() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-1">
-              <p className="text-[11px] text-gray-400">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+              <p className="text-[11px] text-gray-500 max-w-sm">
                 Dispatches real-time reservation alerts and lead submissions to your Telegram group.
               </p>
               <button
                 type="button"
                 disabled={isTestingTelegram}
                 onClick={handleTestTelegram}
-                className="bg-white hover:bg-[#0088cc] hover:text-white text-[#0088cc] border border-gray-200 hover:border-[#0088cc] font-bold px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer shadow-2xs active:scale-95 disabled:opacity-50"
+                className="bg-white hover:bg-[#0088cc] hover:text-white text-[#0088cc] border border-gray-200 hover:border-[#0088cc] font-bold px-3.5 py-2 rounded-lg text-xs transition-all cursor-pointer shadow-2xs active:scale-95 disabled:opacity-50 shrink-0 self-start sm:self-auto"
               >
                 {isTestingTelegram ? 'Testing...' : '⚡ Test & Send Alert'}
               </button>
@@ -372,12 +372,12 @@ export function SettingsView() {
 
           {/* OpenAI API Key Settings */}
           <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200 space-y-3 text-xs">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#10a37f]" />
+                <Sparkles className="w-4 h-4 text-[#10a37f] shrink-0" />
                 <span className="font-bold text-gray-900">OpenAI API Key (ChatGPT-4o)</span>
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-[#10a37f]">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-[#10a37f] w-fit">
                 {openaiStatus}
               </span>
             </div>
@@ -393,15 +393,15 @@ export function SettingsView() {
               />
             </div>
 
-            <div className="flex items-center justify-between pt-1">
-              <p className="text-[11px] text-gray-400">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+              <p className="text-[11px] text-gray-500 max-w-sm">
                 Powers natural conversational chat and vehicle match recommendations.
               </p>
               <button
                 type="button"
                 disabled={isTestingOpenAI}
                 onClick={handleTestOpenAI}
-                className="bg-white hover:bg-[#10a37f] hover:text-white text-[#10a37f] border border-gray-200 hover:border-[#10a37f] font-bold px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer shadow-2xs active:scale-95 disabled:opacity-50"
+                className="bg-white hover:bg-[#10a37f] hover:text-white text-[#10a37f] border border-gray-200 hover:border-[#10a37f] font-bold px-3.5 py-2 rounded-lg text-xs transition-all cursor-pointer shadow-2xs active:scale-95 disabled:opacity-50 shrink-0 self-start sm:self-auto"
               >
                 {isTestingOpenAI ? 'Authenticating...' : '⚡ Test Connection'}
               </button>

@@ -1,41 +1,40 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { MOCK_CARS, CarItem } from '@/data/mockData';
-import { BookingModal } from '@/components/Cards/BookingModal';
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { MOCK_CARS, CarItem } from "@/data/mockData";
+import { BookingModal } from "@/components/Cards/BookingModal";
 
 export function HomeHero() {
-  const router = useRouter();
-  const [selectedCarForBooking, setSelectedCarForBooking] = useState<CarItem | null>(null);
+  const [selectedCarForBooking, setSelectedCarForBooking] =
+    useState<CarItem | null>(null);
 
-  // Search filter states
-  const [pickupCity, setPickupCity] = useState('');
-  const [pickupDate, setPickupDate] = useState('');
-  const [pickupTime, setPickupTime] = useState('');
-  const [dropoffCity, setDropoffCity] = useState('');
-  const [dropoffDate, setDropoffDate] = useState('');
-  const [dropoffTime, setDropoffTime] = useState('');
+  // Search filter states with intelligent defaults
+  const [pickupCity, setPickupCity] = useState("London");
+  const [pickupDate, setPickupDate] = useState("2026-09-01");
+  const [pickupTime, setPickupTime] = useState("09:00");
+  const [dropoffCity, setDropoffCity] = useState("London");
+  const [dropoffDate, setDropoffDate] = useState("2026-09-05");
+  const [dropoffTime, setDropoffTime] = useState("09:00");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const query = pickupCity || dropoffCity || '';
-    if (query) {
-      router.push(`/vehicles?search=${encodeURIComponent(query)}`);
-    } else {
-      router.push('/vehicles');
-    }
+    // Directly open the reservation flow with the featured vehicle and search criteria
+    setSelectedCarForBooking(MOCK_CARS[0]);
   };
 
   return (
     <section className="relative w-full font-jakarta">
       {/* Top Hero Section matching Figma Design */}
-      <div className="relative w-full bg-[#cbd0d8] text-[#131825] pt-6 sm:pt-10 lg:pt-14 pb-6 sm:pb-10 lg:pb-16 overflow-visible">
+      <div className="relative w-full bg-[#cbd0d8] text-[#131825] pt-6 sm:pt-10 lg:pt-14 pb-0 lg:pb-16 overflow-hidden lg:overflow-visible">
         {/* Rectangle 23785: Hero Image extending to the right viewport edge, top: 77.17px, and bottom extending behind search bar on desktop */}
-        <div 
-          style={{ top: '77.17px', bottom: '-55px', borderTopLeftRadius: '63px' }}
+        <div
+          style={{
+            top: "77.17px",
+            bottom: "-55px",
+            borderTopLeftRadius: "63px",
+          }}
           className="hidden lg:block absolute right-0 w-[50vw] xl:w-[48vw] rounded-tl-[63px] overflow-hidden bg-[#9ca3af]/40 z-0 group shadow-inner"
         >
           <Image
@@ -55,12 +54,13 @@ export function HomeHero() {
             <div className="w-full lg:max-w-[560px] flex flex-col items-start z-10 shrink-0">
               <span
                 style={{
-                  color: '#1A202C',
-                  fontFamily: 'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
-                  fontSize: '14px',
-                  fontStyle: 'normal',
+                  color: "#1A202C",
+                  fontFamily:
+                    'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
+                  fontSize: "14px",
+                  fontStyle: "normal",
                   fontWeight: 500,
-                  lineHeight: '121.2%',
+                  lineHeight: "121.2%",
                 }}
                 className="mb-2 sm:mb-3 block text-xs sm:text-sm"
               >
@@ -69,13 +69,14 @@ export function HomeHero() {
 
               <h1
                 style={{
-                  color: '#1A202C',
-                  fontFamily: 'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
-                  fontSize: 'clamp(28px, 6vw, 46px)',
-                  fontStyle: 'normal',
+                  color: "#1A202C",
+                  fontFamily:
+                    'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
+                  fontSize: "clamp(28px, 6vw, 46px)",
+                  fontStyle: "normal",
                   fontWeight: 800,
-                  lineHeight: '121.2%',
-                  textTransform: 'uppercase',
+                  lineHeight: "121.2%",
+                  textTransform: "uppercase",
                 }}
                 className="tracking-tight mb-4 sm:mb-5"
               >
@@ -86,17 +87,20 @@ export function HomeHero() {
 
               <p
                 style={{
-                  color: '#596780',
-                  fontFamily: 'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
-                  fontSize: '15px',
-                  fontStyle: 'normal',
+                  color: "#596780",
+                  fontFamily:
+                    'var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif',
+                  fontSize: "15px",
+                  fontStyle: "normal",
                   fontWeight: 500,
-                  lineHeight: '160%',
-                  letterSpacing: '-0.32px',
+                  lineHeight: "160%",
+                  letterSpacing: "-0.32px",
                 }}
                 className="max-w-[560px] mb-6 sm:mb-8 font-normal text-sm sm:text-base"
               >
-                Our Car Rental online booking system designed to meet the specific needs of car rental business owners. This easy-to-use car rental software will let you manage.
+                Our Car Rental online booking system designed to meet the
+                specific needs of car rental business owners. This easy-to-use
+                car rental software will let you manage.
               </p>
 
               {/* CTA Buttons */}
@@ -118,11 +122,11 @@ export function HomeHero() {
               </div>
             </div>
 
-            {/* Right Column Mobile Image */}
-            <div className="w-full flex justify-end relative lg:hidden mt-2">
-              <div 
-                style={{ borderTopLeftRadius: '40px' }}
-                className="relative w-full h-[200px] sm:h-[260px] rounded-tl-[40px] overflow-hidden bg-[#9ca3af]/40 shadow-inner group"
+            {/* Right Column Mobile Image: flush to the right edge and bottom edge */}
+            <div className="w-[calc(100%+1rem)] sm:w-[calc(100%+1.5rem)] -mr-4 sm:-mr-6 self-end flex justify-end relative lg:hidden mt-4">
+              <div
+                style={{ borderTopLeftRadius: "40px" }}
+                className="relative w-full h-[220px] sm:h-[280px] rounded-tl-[40px] overflow-hidden bg-[#9ca3af]/40 shadow-inner group"
               >
                 <Image
                   src="/car_full_1.jpg"
@@ -165,7 +169,7 @@ export function HomeHero() {
                   <div className="relative flex items-center">
                     <select
                       value={pickupCity}
-                      onChange={(e) => setPickupCity(e.target.value)}
+                      onChange={e => setPickupCity(e.target.value)}
                       className="w-full text-xs text-[#8f96a3] bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 font-normal"
                     >
                       <option value="">Select your city</option>
@@ -180,7 +184,12 @@ export function HomeHero() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -193,7 +202,7 @@ export function HomeHero() {
                   <div className="relative flex items-center">
                     <select
                       value={pickupDate}
-                      onChange={(e) => setPickupDate(e.target.value)}
+                      onChange={e => setPickupDate(e.target.value)}
                       className="w-full text-xs text-[#8f96a3] bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 font-normal"
                     >
                       <option value="">Select your date</option>
@@ -209,7 +218,12 @@ export function HomeHero() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -222,7 +236,7 @@ export function HomeHero() {
                   <div className="relative flex items-center">
                     <select
                       value={pickupTime}
-                      onChange={(e) => setPickupTime(e.target.value)}
+                      onChange={e => setPickupTime(e.target.value)}
                       className="w-full text-xs text-[#8f96a3] bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 font-normal"
                     >
                       <option value="">Select your time</option>
@@ -237,7 +251,12 @@ export function HomeHero() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -264,7 +283,7 @@ export function HomeHero() {
                   <div className="relative flex items-center">
                     <select
                       value={dropoffCity}
-                      onChange={(e) => setDropoffCity(e.target.value)}
+                      onChange={e => setDropoffCity(e.target.value)}
                       className="w-full text-xs text-[#8f96a3] bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 font-normal"
                     >
                       <option value="">Select your city</option>
@@ -279,7 +298,12 @@ export function HomeHero() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -292,7 +316,7 @@ export function HomeHero() {
                   <div className="relative flex items-center">
                     <select
                       value={dropoffDate}
-                      onChange={(e) => setDropoffDate(e.target.value)}
+                      onChange={e => setDropoffDate(e.target.value)}
                       className="w-full text-xs text-[#8f96a3] bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 font-normal"
                     >
                       <option value="">Select your date</option>
@@ -308,7 +332,12 @@ export function HomeHero() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -321,7 +350,7 @@ export function HomeHero() {
                   <div className="relative flex items-center">
                     <select
                       value={dropoffTime}
-                      onChange={(e) => setDropoffTime(e.target.value)}
+                      onChange={e => setDropoffTime(e.target.value)}
                       className="w-full text-xs text-[#8f96a3] bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 font-normal"
                     >
                       <option value="">Select your time</option>
@@ -336,7 +365,12 @@ export function HomeHero() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -361,6 +395,9 @@ export function HomeHero() {
         car={selectedCarForBooking}
         isOpen={!!selectedCarForBooking}
         onClose={() => setSelectedCarForBooking(null)}
+        initialPickupDate={pickupDate}
+        initialReturnDate={dropoffDate}
+        initialLocation={pickupCity ? `${pickupCity} Airport & Central Hub` : 'London Heathrow Airport (LHR)'}
       />
     </section>
   );

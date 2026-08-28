@@ -158,7 +158,7 @@ export async function POST(req: Request) {
     // 3. OpenAI SDK Live Production Execution
     let rawApiKey = process.env.OPENAI_API_KEY || '';
     rawApiKey = rawApiKey.trim().replace(/^["']|["']$/g, '');
-    const model = (process.env.OPENAI_MODEL || 'gpt-4o-mini').trim().replace(/^["']|["']$/g, '');
+    const model = (process.env.OPENAI_MODEL?.trim() || 'gpt-4o').replace(/^["']|["']$/g, '');
 
     const isValidKey =
       rawApiKey &&
@@ -207,7 +207,7 @@ Behavioral Guidelines:
         ];
 
         const completion = await openai.chat.completions.create({
-          model: model || 'gpt-4o-mini',
+          model: model,
           messages: openAiMessages,
           temperature: 0.7,
           max_tokens: 450,

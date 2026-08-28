@@ -2,16 +2,17 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface NavItem {
   label: string;
   href: string;
-  isActive?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Fleet Catalog', href: '/vehicles' },
+  { label: 'Dashboard', href: '/admin' },
   { label: 'How it Work', href: '/#how-it-work' },
   { label: 'Rental Details', href: '/#rental-details' },
   { label: 'Why Choose Us', href: '/#why-choose-us' },
@@ -19,6 +20,7 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,10 +54,16 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  const isLinkActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    if (href.startsWith('/#')) return false;
+    return pathname.startsWith(href);
+  };
+
   return (
     <>
-      <header className="w-full bg-[#cbd0d8] text-[#131825] border-b border-black/5 sticky top-0 z-40 transition-colors font-jakarta">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#cbd0d8]/95 backdrop-blur-md transition-all duration-300 shadow-2xs">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-20 h-20 sm:h-24 flex items-center justify-between">
           {/* Brand Logo */}
           <Link
             href="/"
@@ -68,19 +76,22 @@ export function Navbar() {
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {/* Main Navigation Links */}
             <div className="flex items-center gap-6 xl:gap-7 font-jakarta">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`text-sm xl:text-base cursor-pointer transition-colors duration-150 ${
-                    item.isActive
-                      ? 'font-bold text-[#131825]'
-                      : 'font-medium text-[#4b5563] hover:text-[#131825]'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {NAV_ITEMS.map((item) => {
+                const active = isLinkActive(item.href);
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`text-sm xl:text-base cursor-pointer transition-colors duration-150 ${
+                      active
+                        ? 'font-bold text-[#131825]'
+                        : 'font-medium text-[#4b5563] hover:text-[#131825]'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Vertical Separator */}
@@ -165,21 +176,24 @@ export function Navbar() {
 
           {/* Navigation Links */}
           <ul className="flex flex-col gap-y-2">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                    item.isActive
-                      ? 'bg-white/80 font-bold text-[#131825] shadow-2xs'
-                      : 'font-medium text-[#4b5563] hover:text-[#131825] hover:bg-white/40'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const active = isLinkActive(item.href);
+              return (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                      active
+                        ? 'bg-white/80 font-bold text-[#131825] shadow-2xs'
+                        : 'font-medium text-[#4b5563] hover:text-[#131825] hover:bg-white/40'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

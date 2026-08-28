@@ -29,7 +29,7 @@ export async function GET() {
       },
       openai: {
         configured: !!isOpenAiConfigured,
-        model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+        model: process.env.OPENAI_MODEL || 'gpt-4o',
         keyMasked: isOpenAiConfigured ? `sk-••••••••${openaiKey.slice(-4)}` : '',
       },
     },
@@ -96,8 +96,9 @@ export async function POST(req: Request) {
 
       try {
         const openai = new OpenAI({ apiKey: key });
+        const testModel = (process.env.OPENAI_MODEL?.trim() || 'gpt-4o').replace(/^["']|["']$/g, '');
         const res = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
+          model: testModel,
           messages: [{ role: 'user', content: 'Say "OpenAI live connection verified!" in 5 words.' }],
           max_tokens: 20,
         });

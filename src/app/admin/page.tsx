@@ -50,7 +50,7 @@ export default function AdminDashboardPage() {
     ],
   });
 
-  const fetchDashboardStats = async (tf = timeframe, yr = year) => {
+  const fetchDashboardStats = React.useCallback(async (tf = timeframe, yr = year) => {
     setIsRefreshing(true);
     try {
       const res = await fetch(`/api/dashboard/stats?timeframe=${tf}&year=${yr}`);
@@ -69,11 +69,11 @@ export default function AdminDashboardPage() {
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [timeframe, year]);
 
   useEffect(() => {
     fetchDashboardStats(timeframe, year);
-  }, [timeframe, year]);
+  }, [fetchDashboardStats, timeframe, year]);
 
   // Distinct view per active sidebar tab
   if (activeTab === 'Fleet Inventory') {

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Monitor, CheckCircle, Car, CreditCard, ShieldCheck } from 'lucide-react';
+import { X, Monitor, CheckCircle } from 'lucide-react';
 import { MOCK_CARS } from '@/data/mockData';
 
 interface POSModalProps {
@@ -63,17 +63,17 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
       onClick={handleDone}
     >
       <div
-        className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 cursor-default"
+        className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 cursor-default max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#131825] text-white flex items-center justify-center">
+        <div className="flex items-start justify-between pb-4 border-b border-gray-100 gap-2">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <div className="w-8 h-8 rounded-lg bg-[#131825] text-white flex items-center justify-center shrink-0">
               <Monitor className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-gray-900">Express POS Terminal</h3>
+            <div className="min-w-0">
+              <h3 className="text-base font-bold text-gray-900 truncate">Express POS Terminal</h3>
               <p className="text-xs text-gray-500">Walk-in customer checkout &amp; instant contract creation</p>
             </div>
           </div>
@@ -81,7 +81,7 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="w-7 h-7 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors"
+            className="w-7 h-7 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
@@ -106,7 +106,7 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
             <button
               type="button"
               onClick={handleDone}
-              className="w-full bg-[#131825] text-white py-2.5 rounded-lg text-xs font-bold hover:bg-black transition-all"
+              className="w-full bg-[#131825] text-white py-2.5 rounded-lg text-xs font-bold hover:bg-black transition-all cursor-pointer"
             >
               Done &amp; Return to Dashboard
             </button>
@@ -118,7 +118,7 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
               <select
                 value={selectedCarId}
                 onChange={(e) => setSelectedCarId(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-800 font-semibold focus:outline-none focus:border-[#FF9F43]"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-xs text-gray-800 font-semibold focus:outline-none focus:border-[#FF9F43]"
               >
                 {MOCK_CARS.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -128,7 +128,7 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-gray-700 mb-1">Customer Full Name</label>
                 <input
@@ -153,7 +153,7 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-gray-700 mb-1">Rental Days</label>
                 <input
@@ -186,22 +186,22 @@ export function POSModal({ isOpen, onClose, onCreateBooking }: POSModalProps) {
                 <p className="text-[11px] text-[#FF8A00] font-semibold">Total Payable Now</p>
                 <p className="text-xl font-extrabold text-[#131825]">${totalPrice.toFixed(2)}</p>
               </div>
-              <span className="text-[10px] bg-white px-2 py-1 rounded-md text-gray-600 font-bold border border-black/5">
+              <span className="text-[10px] bg-white px-2 py-1 rounded-md text-gray-600 font-bold border border-black/5 shrink-0">
                 Instant Release
               </span>
             </div>
 
-            <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2.5">
+            <div className="pt-3 border-t border-gray-100 flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-2.5">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors text-center cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 rounded-lg bg-[#131825] hover:bg-black text-white font-bold shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#131825] hover:bg-black text-white font-bold shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer text-center"
               >
                 Process Payment &amp; Issue Key
               </button>

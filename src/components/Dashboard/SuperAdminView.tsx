@@ -10,8 +10,6 @@ import {
   Trash2,
   Lock,
   CheckCircle2,
-  AlertTriangle,
-  RotateCcw,
 } from 'lucide-react';
 
 interface StaffUser {
@@ -87,13 +85,13 @@ export function SuperAdminView() {
     <div className="space-y-6 font-jakarta">
       {/* Header Banner */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#131825] to-[#2A3447] text-white flex items-center justify-center shadow-md">
-            <ShieldAlert className="w-6 h-6 text-[#FF9F43]" />
+        <div className="flex items-center gap-3.5 min-w-0">
+          <div className="w-11 h-11 min-w-[44px] min-h-[44px] aspect-square rounded-2xl bg-gradient-to-tr from-[#131825] to-[#2A3447] text-white flex items-center justify-center shadow-md shrink-0">
+            <ShieldAlert className="w-6 h-6 text-[#FF9F43] shrink-0" />
           </div>
-          <div>
-            <h2 className="text-lg font-bold text-gray-900">Super Administrator Control Center</h2>
-            <p className="text-xs text-gray-500">
+          <div className="min-w-0">
+            <h2 className="text-lg font-bold text-gray-900 leading-tight">Super Administrator Control Center</h2>
+            <p className="text-xs text-gray-500 mt-0.5">
               Manage system permissions, staff role assignments, and server telemetry
             </p>
           </div>

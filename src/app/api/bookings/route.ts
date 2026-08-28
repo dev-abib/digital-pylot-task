@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       message: 'Booking created successfully',
       booking: newBooking,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 });
   }
 }

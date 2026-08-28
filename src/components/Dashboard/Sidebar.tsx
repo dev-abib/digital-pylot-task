@@ -14,6 +14,8 @@ import {
   ShieldAlert,
 } from 'lucide-react';
 
+import { usePathname } from 'next/navigation';
+
 export type DashboardTab =
   | 'Dashboard'
   | 'Fleet Inventory'
@@ -32,18 +34,19 @@ interface SidebarProps {
 
 interface NavMenuItem {
   name: DashboardTab;
+  href: string;
   icon: React.ComponentType<{ className?: string }>;
   badge?: string;
 }
 
 const MENU_ITEMS: NavMenuItem[] = [
-  { name: 'Dashboard', icon: LayoutDashboard },
-  { name: 'Fleet Inventory', icon: Car, badge: '36' },
-  { name: 'Bookings Manifest', icon: CalendarCheck, badge: 'Live' },
-  { name: 'Leads & Inquiries', icon: Users },
-  { name: 'Sales Analytics', icon: BarChart3 },
-  { name: 'Super Admin', icon: ShieldAlert },
-  { name: 'Settings', icon: Settings },
+  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Fleet Inventory', href: '/admin/fleet', icon: Car, badge: '36' },
+  { name: 'Bookings Manifest', href: '/admin/bookings', icon: CalendarCheck, badge: 'Live' },
+  { name: 'Leads & Inquiries', href: '/admin/leads', icon: Users },
+  { name: 'Sales Analytics', href: '/admin/sales', icon: BarChart3 },
+  { name: 'Super Admin', href: '/admin/super-admin', icon: ShieldAlert },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export function Sidebar({
@@ -52,6 +55,8 @@ export function Sidebar({
   activeTab = 'Dashboard',
   onSelectTab,
 }: SidebarProps) {
+  const pathname = usePathname() || '/admin';
+
   return (
     <aside
       className={`bg-white border-r border-gray-100 h-screen sticky top-0 flex flex-col justify-between transition-all duration-300 z-40 select-none ${
@@ -98,12 +103,13 @@ export function Sidebar({
 
           {MENU_ITEMS.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.name;
+            const isRouteMatch = item.href === '/admin' ? pathname === '/admin' || pathname === '/dashboard' : pathname.startsWith(item.href);
+            const isActive = isRouteMatch || activeTab === item.name;
 
             return (
-              <button
+              <Link
                 key={item.name}
-                type="button"
+                href={item.href}
                 onClick={() => onSelectTab?.(item.name)}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   isActive
@@ -132,7 +138,7 @@ export function Sidebar({
                     {item.badge}
                   </span>
                 )}
-              </button>
+              </Link>
             );
           })}
         </div>

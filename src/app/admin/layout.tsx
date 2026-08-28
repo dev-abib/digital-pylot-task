@@ -267,7 +267,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         openPOS: () => setIsPOSOpen(true),
       }}
     >
-      <div className="min-h-screen bg-[#F8F9FA] flex font-jakarta antialiased relative">
+      <div className="min-h-screen bg-[#F8F9FA] flex font-jakarta antialiased relative overflow-x-clip w-full max-w-full">
         {/* Mobile Drawer Backdrop */}
         {isMobileSidebarOpen && (
           <div
@@ -302,7 +302,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Main Content Body */}
-        <div className="flex-1 flex flex-col min-w-0 w-full">
+        <div className="flex-1 flex flex-col min-w-0 w-full overflow-x-clip">
           {/* Top Navbar Header with Functional Buttons */}
           <Header
             onToggleSidebar={() => {

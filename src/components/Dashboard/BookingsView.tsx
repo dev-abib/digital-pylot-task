@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CalendarCheck, Search, CheckCircle, XCircle, Clock, DollarSign } from 'lucide-react';
+import { Search, CheckCircle, XCircle } from 'lucide-react';
 
 interface BookingItem {
   id: string;
@@ -19,34 +19,44 @@ const INITIAL_BOOKINGS: BookingItem[] = [
     id: 'BK-1099',
     customerName: 'Mike Witzel',
     carName: 'Range Rover Velar',
-    pickupDate: '2026-09-01',
-    returnDate: '2026-09-05',
+    pickupDate: '2026-08-28',
+    returnDate: '2026-08-31',
     status: 'Confirmed',
-    totalPrice: 1040.0,
-    paymentMethod: 'Paypal',
+    totalPrice: 285.0,
+    paymentMethod: 'Credit Card',
   },
   {
     id: 'BK-1098',
     customerName: 'Sarah Jenkins',
     carName: 'Mercedes S-Class',
-    pickupDate: '2026-09-03',
-    returnDate: '2026-09-07',
+    pickupDate: '2026-09-01',
+    returnDate: '2026-09-05',
     status: 'Confirmed',
     totalPrice: 480.0,
     paymentMethod: 'Apple Pay',
   },
   {
     id: 'BK-1097',
-    customerName: 'David Zhang',
-    carName: 'Aston Martin Vantage',
+    customerName: 'David Chen',
+    carName: 'Tesla Model Y',
     pickupDate: '2026-09-02',
-    returnDate: '2026-09-04',
+    returnDate: '2026-09-06',
     status: 'Pending',
-    totalPrice: 390.0,
+    totalPrice: 340.0,
     paymentMethod: 'Stripe',
   },
   {
     id: 'BK-1096',
+    customerName: 'Alex Morgan',
+    carName: 'Aston Martin Vantage',
+    pickupDate: '2026-08-25',
+    returnDate: '2026-08-28',
+    status: 'Cancelled',
+    totalPrice: 585.0,
+    paymentMethod: 'Credit Card',
+  },
+  {
+    id: 'BK-1095',
     customerName: 'Emily Clarke',
     carName: 'Toyota Corolla Hybrid',
     pickupDate: '2026-08-30',
@@ -73,7 +83,9 @@ export function BookingsView() {
   });
 
   const handleStatusChange = (id: string, newStatus: 'Confirmed' | 'Pending' | 'Cancelled') => {
-    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b)));
+    setBookings((prev) =>
+      prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b))
+    );
   };
 
   return (
@@ -84,7 +96,19 @@ export function BookingsView() {
           <p className="text-xs text-gray-500">Live manifest of all customer car bookings and check-in statuses</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Quick Search */}
+          <div className="relative">
+            <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search booking ID, client..."
+              className="bg-gray-50 border border-gray-200 rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#FF9F43] w-48 sm:w-56"
+            />
+          </div>
+
           {/* Status Tabs */}
           <div className="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs">
             {(['All', 'Confirmed', 'Pending', 'Cancelled'] as const).map((tab) => (

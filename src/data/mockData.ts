@@ -558,4 +558,13 @@ export const MOCK_TESTIMONIALS: TestimonialItem[] = [
       '“Seamless online reservation, flexible cancellation terms, and friendly staff. Will definitely rent again when visiting next month!”.',
     avatarText: 'SM',
   },
+  {
+    id: '6',
+    name: 'David Chen',
+    location: 'Toronto, Canada',
+    rating: '5.0',
+    review:
+      '“Flawless vehicle condition and incredibly polite customer support. Picking up the car was quick and hassle-free. Highly recommended!”.',
+    avatarText: 'DC',
+  },
 ];
