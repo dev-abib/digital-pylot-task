@@ -18,6 +18,7 @@
   - Sales Analytics & World Map: [https://digital-pylot-task-seven.vercel.app/admin/sales](https://digital-pylot-task-seven.vercel.app/admin/sales)
   - Super Administrator: [https://digital-pylot-task-seven.vercel.app/admin/super-admin](https://digital-pylot-task-seven.vercel.app/admin/super-admin)
   - Settings & Integrations: [https://digital-pylot-task-seven.vercel.app/admin/settings](https://digital-pylot-task-seven.vercel.app/admin/settings)
+- **Live Telegram Bot**: [@digital_pylot_leads_bot](https://t.me/digital_pylot_leads_bot)
 - **Local Development URL**: `http://localhost:3000`
 
 ---
@@ -128,7 +129,7 @@ Alternatively, the Range Rover Velar is available at $95/day and comfortably sea
 
 ### 4. ⚡ Automation & Lead Pipeline (`/api/leads` & `src/lib/telegram.ts`)
 
-When a customer confirms a reservation or submits an inquiry, an automated pipeline constructs a formatted Markdown ticket and dispatches it in real time via the **Telegram Bot API**:
+When a customer confirms a reservation or submits an inquiry, an automated pipeline constructs a formatted Markdown ticket and dispatches it in real time via the **Telegram Bot API** ([@digital_pylot_leads_bot](https://t.me/digital_pylot_leads_bot)):
 
 ```markdown
 🚗 NEW LUXURY RENTAL RESERVATION
