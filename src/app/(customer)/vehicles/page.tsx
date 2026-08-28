@@ -21,9 +21,13 @@ type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating-desc' | 'nam
 function VehiclesCatalogContent() {
   const searchParams = useSearchParams();
 
-  // Initial params
+  // Initial params (clean URL if city location was passed)
+  const rawSearch = searchParams.get('search') || '';
+  const isCityLocation = ['heathrow', 'london', 'manchester', 'birmingham', 'airport', 'central'].includes(
+    rawSearch.toLowerCase().trim()
+  );
+  const initialSearch = isCityLocation ? '' : rawSearch;
   const initialCategory = searchParams.get('category') || 'All';
-  const initialSearch = searchParams.get('search') || '';
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState(initialSearch);
@@ -34,6 +38,13 @@ function VehiclesCatalogContent() {
   const [maxPrice, setMaxPrice] = useState<number>(550);
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  // Clean URL in browser address bar if location query was passed
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('search=Heathrow')) {
+      window.history.replaceState(null, '', '/vehicles');
+    }
+  }, []);
 
   // Booking Modal State
   const [selectedCarForBooking, setSelectedCarForBooking] = useState<CarItem | null>(null);
