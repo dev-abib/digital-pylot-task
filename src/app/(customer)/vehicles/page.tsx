@@ -76,13 +76,18 @@ function VehiclesCatalogContent() {
   // Filter & Sort Logic
   const filteredVehicles = useMemo(() => {
     return MOCK_CARS.filter((car) => {
-      // 1. Text Search
+      // 1. Text Search & Location Hub Matcher
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchesName = car.name.toLowerCase().includes(q);
-        const matchesType = car.type.toLowerCase().includes(q);
-        const matchesCategory = car.category.toLowerCase().includes(q);
-        if (!matchesName && !matchesType && !matchesCategory) return false;
+        const q = searchQuery.toLowerCase().trim();
+        const UK_HUBS = ['heathrow', 'london', 'manchester', 'birmingham', 'airport', 'central'];
+        const isLocationHub = UK_HUBS.some((hub) => q.includes(hub));
+        
+        if (!isLocationHub) {
+          const matchesName = car.name.toLowerCase().includes(q);
+          const matchesType = car.type.toLowerCase().includes(q);
+          const matchesCategory = car.category.toLowerCase().includes(q);
+          if (!matchesName && !matchesType && !matchesCategory) return false;
+        }
       }
 
       // 2. Category
