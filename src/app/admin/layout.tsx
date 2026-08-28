@@ -10,8 +10,6 @@ import { CarItem, MOCK_CARS } from '@/data/mockData';
 import { TransactionItem } from '@/components/Dashboard/RecentTransactions';
 
 interface DashboardContextType {
-  activeTab: DashboardTab;
-  setActiveTab: (tab: DashboardTab) => void;
   vehicles: CarItem[];
   setVehicles: React.Dispatch<React.SetStateAction<CarItem[]>>;
   transactions: TransactionItem[];
@@ -85,105 +83,14 @@ const DEFAULT_TRANSACTIONS: TransactionItem[] = [
   },
 ];
 
-const TAB_SLUG_MAP: Record<string, DashboardTab> = {
-  dashboard: 'Dashboard',
-  fleet: 'Fleet Inventory',
-  bookings: 'Bookings Manifest',
-  leads: 'Leads & Inquiries',
-  sales: 'Sales Analytics',
-  admin: 'Super Admin',
-  settings: 'Settings',
-};
-
-const TAB_TO_SLUG_MAP: Record<DashboardTab, string> = {
-  Dashboard: 'dashboard',
-  'Fleet Inventory': 'fleet',
-  'Bookings Manifest': 'bookings',
-  'Leads & Inquiries': 'leads',
-  'Sales Analytics': 'sales',
-  'Super Admin': 'admin',
-  Settings: 'settings',
-};
-
-const STORAGE_ACTIVE_TAB = 'bestauto_admin_active_tab_v2';
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [activeTab, setActiveTabState] = useState<DashboardTab>('Dashboard');
   const [vehicles, setVehicles] = useState<CarItem[]>(MOCK_CARS);
   const [transactions, setTransactions] = useState<TransactionItem[]>(DEFAULT_TRANSACTIONS);
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
   const [isPOSOpen, setIsPOSOpen] = useState(false);
-  const [isAdminAuthorized, setIsAdminAuthorized] = useState<boolean | null>(null);
-
-  // Check admin authorization from localStorage or seed
-  useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('bestauto_current_user');
-      if (savedUser) {
-        const parsed = JSON.parse(savedUser);
-        if (parsed.role === 'Admin') {
-          setIsAdminAuthorized(true);
-          return;
-        }
-      }
-      setIsAdminAuthorized(false);
-    } catch {
-      setIsAdminAuthorized(false);
-    }
-  }, []);
-
-  const handleAuthorizeMockAdmin = () => {
-    const mockAdmin = {
-      name: 'Mike Witzel',
-      email: 'admin@bestauto.com',
-      role: 'Admin',
-    };
-    try {
-      localStorage.setItem('bestauto_current_user', JSON.stringify(mockAdmin));
-    } catch {}
-    setIsAdminAuthorized(true);
-  };
-
-  // Sync active tab from URL query params or localStorage on initial mount
-  useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlTab = urlParams.get('tab')?.toLowerCase();
-
-        if (urlTab && TAB_SLUG_MAP[urlTab]) {
-          setActiveTabState(TAB_SLUG_MAP[urlTab]);
-          localStorage.setItem(STORAGE_ACTIVE_TAB, TAB_SLUG_MAP[urlTab]);
-        } else {
-          const savedTab = localStorage.getItem(STORAGE_ACTIVE_TAB) as DashboardTab;
-          if (savedTab && Object.values(TAB_SLUG_MAP).includes(savedTab)) {
-            setActiveTabState(savedTab);
-            const slug = TAB_TO_SLUG_MAP[savedTab] || 'dashboard';
-            window.history.replaceState(null, '', `/admin?tab=${slug}`);
-          }
-        }
-      }
-    } catch {
-      // Ignore
-    }
-  }, []);
-
-  const handleSetActiveTab = (tab: DashboardTab) => {
-    setActiveTabState(tab);
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_ACTIVE_TAB, tab);
-        const slug = TAB_TO_SLUG_MAP[tab] || 'dashboard';
-        window.history.replaceState(null, '', `/admin?tab=${slug}`);
-      }
-    } catch {
-      // Ignore
-    }
-  };
-
   const handleAddVehicle = (newCar: CarItem) => {
     setVehicles((prev) => [newCar, ...prev]);
   };
@@ -192,71 +99,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setTransactions((prev) => [newTx, ...prev]);
   };
 
-  // Loading state while checking authorization
-  if (isAdminAuthorized === null) {
-    return (
-      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center font-jakarta">
-        <div className="text-center space-y-3">
-          <div className="w-8 h-8 border-3 border-[#131825] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs font-semibold text-gray-500">Verifying Admin Authorization...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Unauthorized Gate: Prompt for Admin login or 1-Click Mock Admin Verification
-  if (!isAdminAuthorized) {
-    return (
-      <div className="min-h-screen bg-[#0E131F] flex items-center justify-center p-4 font-jakarta selection:bg-[#FA8B2B] selection:text-white">
-        <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-gray-100 shadow-2xl space-y-6 text-center animate-in fade-in zoom-in-95 duration-200">
-          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto border border-amber-100 text-[#FA8B2B]">
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-
-          <div className="space-y-1.5">
-            <h2 className="font-rubik text-2xl font-bold text-[#131825]">
-              Admin Access Required
-            </h2>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              This dashboard is restricted to authorized operators. You can verify using the seeded Mock Admin or log in.
-            </p>
-          </div>
-
-          <div className="space-y-2.5 pt-2">
-            <button
-              type="button"
-              onClick={handleAuthorizeMockAdmin}
-              className="w-full bg-[#131825] hover:bg-black text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm tracking-wide transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2"
-            >
-              <span>Authorize as Mock Admin (Mike Witzel)</span>
-            </button>
-
-            <Link
-              href="/login"
-              className="block w-full py-3 rounded-xl border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-50 transition-colors"
-            >
-              Sign In with Admin Credentials
-            </Link>
-
-            <Link
-              href="/"
-              className="block text-xs font-medium text-gray-400 hover:text-gray-700 transition-colors pt-1"
-            >
-              Return to Storefront
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <DashboardContext.Provider
       value={{
-        activeTab,
-        setActiveTab: handleSetActiveTab,
         vehicles,
         setVehicles,
         transactions,
@@ -291,9 +136,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 setIsSidebarCollapsed(!isSidebarCollapsed);
               }
             }}
-            activeTab={activeTab}
-            onSelectTab={(tab) => {
-              handleSetActiveTab(tab);
+            onNavigate={() => {
               if (window.innerWidth < 1024) {
                 setIsMobileSidebarOpen(false);
               }

@@ -28,8 +28,7 @@ export type DashboardTab =
 interface SidebarProps {
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
-  activeTab?: DashboardTab;
-  onSelectTab?: (tab: DashboardTab) => void;
+  onNavigate?: () => void;
 }
 
 interface NavMenuItem {
@@ -52,8 +51,7 @@ const MENU_ITEMS: NavMenuItem[] = [
 export function Sidebar({
   isCollapsed = false,
   onToggleCollapse,
-  activeTab = 'Dashboard',
-  onSelectTab,
+  onNavigate,
 }: SidebarProps) {
   const pathname = usePathname() || '/admin';
 
@@ -103,14 +101,14 @@ export function Sidebar({
 
           {MENU_ITEMS.map((item) => {
             const Icon = item.icon;
-            const isRouteMatch = item.href === '/admin' ? pathname === '/admin' || pathname === '/dashboard' : pathname.startsWith(item.href);
-            const isActive = isRouteMatch || activeTab === item.name;
+            const isRouteMatch = item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
+            const isActive = isRouteMatch;
 
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                onClick={() => onSelectTab?.(item.name)}
+                onClick={() => onNavigate?.()}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   isActive
                     ? 'bg-[#FFF4EC] text-[#FF8A00] shadow-xs'

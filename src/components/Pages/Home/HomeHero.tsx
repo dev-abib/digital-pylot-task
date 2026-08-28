@@ -42,7 +42,7 @@ export function HomeHero() {
             alt="Luxury Modern Rental Car"
             fill
             priority
-            sizes="50vw"
+            sizes="(min-width: 1280px) 48vw, 50vw"
             className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
@@ -133,7 +133,7 @@ export function HomeHero() {
                   alt="Luxury Modern Rental Car"
                   fill
                   priority
-                  sizes="100vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1023px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>

@@ -8,17 +8,17 @@
 
 ## 🌐 Live Demo & Navigation Map
 
-- **Live Production URL**: `https://best-auto-car-rental.vercel.app` *(or custom domain assigned upon deployment)*
+- **Live Production URL**: [https://digital-pylot-task-seven.vercel.app](https://digital-pylot-task-seven.vercel.app)
+- **Customer Storefront**: [https://digital-pylot-task-seven.vercel.app/](https://digital-pylot-task-seven.vercel.app/)
+- **Fleet Catalog & Vehicles Explorer**: [https://digital-pylot-task-seven.vercel.app/vehicles](https://digital-pylot-task-seven.vercel.app/vehicles)
+- **Executive Operations Dashboard**: [https://digital-pylot-task-seven.vercel.app/admin](https://digital-pylot-task-seven.vercel.app/admin)
+  - Fleet Inventory Management: [https://digital-pylot-task-seven.vercel.app/admin/fleet](https://digital-pylot-task-seven.vercel.app/admin/fleet)
+  - Bookings Manifest: [https://digital-pylot-task-seven.vercel.app/admin/bookings](https://digital-pylot-task-seven.vercel.app/admin/bookings)
+  - Inbound Leads CRM: [https://digital-pylot-task-seven.vercel.app/admin/leads](https://digital-pylot-task-seven.vercel.app/admin/leads)
+  - Sales Analytics & World Map: [https://digital-pylot-task-seven.vercel.app/admin/sales](https://digital-pylot-task-seven.vercel.app/admin/sales)
+  - Super Administrator: [https://digital-pylot-task-seven.vercel.app/admin/super-admin](https://digital-pylot-task-seven.vercel.app/admin/super-admin)
+  - Settings & Integrations: [https://digital-pylot-task-seven.vercel.app/admin/settings](https://digital-pylot-task-seven.vercel.app/admin/settings)
 - **Local Development URL**: `http://localhost:3000`
-- **Customer Storefront**: `http://localhost:3000/`
-- **Fleet Catalog & Vehicles Explorer**: `http://localhost:3000/vehicles`
-- **Executive Operations Dashboard**: `http://localhost:3000/admin` (Includes 1-click instant Admin Authorization)
-  - Fleet Inventory Management: `http://localhost:3000/admin/fleet`
-  - Bookings Manifest: `http://localhost:3000/admin/bookings`
-  - Inbound Leads CRM: `http://localhost:3000/admin/leads`
-  - Sales Analytics & World Map: `http://localhost:3000/admin/sales`
-  - Super Administrator: `http://localhost:3000/admin/super-admin`
-  - Settings & Integrations: `http://localhost:3000/admin/settings`
 
 ---
 
@@ -153,8 +153,8 @@ When a customer confirms a reservation or submits an inquiry, an automated pipel
 ## 📁 Repository Structure
 
 ```
-c:\spl_features\prac\
-├── public/                                # Static vehicle assets & imagery
+digital-pylot-task/
+├── public/                                # High-resolution vehicle assets & brand graphics
 │   ├── avatar_mike.jpg                    # Profile photo
 │   ├── car_full_1.jpg                     # Supercar showcase asset
 │   ├── car_full_2.jpg                     # Luxury sedan asset
@@ -174,7 +174,7 @@ c:\spl_features\prac\
 │   │   │   ├── page.tsx                   # Storefront Landing Page
 │   │   │   └── vehicles/page.tsx          # Dedicated Fleet Explorer & Filter Page
 │   │   │
-│   │   ├── admin/                         # Executive Operations Dashboard
+│   │   ├── admin/                         # Executive Operations Dashboard (Route-Based)
 │   │   │   ├── layout.tsx                 # DashboardContext provider, persistent sidebar, & header
 │   │   │   ├── page.tsx                   # Overview KPI metrics, charts, & transactions
 │   │   │   ├── fleet/page.tsx             # Fleet Inventory Asset Register
@@ -184,7 +184,7 @@ c:\spl_features\prac\
 │   │   │   ├── super-admin/page.tsx       # System health & staff roles
 │   │   │   └── settings/page.tsx          # Live API credentials & automations
 │   │   │
-│   │   ├── api/                           # Backend REST & AI Route Handlers
+│   │   ├── api/                           # Next.js App Router REST & AI Route Handlers
 │   │   │   ├── chat/route.ts              # Dynamic OpenAI API & fleet matcher
 │   │   │   ├── leads/route.ts             # Lead ingestion & Telegram automation trigger
 │   │   │   ├── dashboard/stats/route.ts   # Dynamic dashboard statistics & chart metrics
@@ -192,8 +192,9 @@ c:\spl_features\prac\
 │   │   │   ├── telegram/test/route.ts     # Diagnostic Telegram bot connectivity endpoint
 │   │   │   └── bookings/route.ts          # Bookings creation & manifest API
 │   │   │
-│   │   ├── globals.css                    # Tailwind CSS v4 design tokens
-│   │   └── layout.tsx                     # Root HTML layout
+│   │   ├── globals.css                    # Tailwind CSS design tokens
+│   │   ├── layout.tsx                     # Root HTML layout with Google Fonts
+│   │   └── not-found.tsx                  # Custom 404 Road Detour Page
 │   │
 │   ├── components/
 │   │   ├── AI/

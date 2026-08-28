@@ -8,20 +8,9 @@ import { BestSeller } from '@/components/Dashboard/BestSeller';
 import { RecentTransactions } from '@/components/Dashboard/RecentTransactions';
 import { SalesAnalyticsChart } from '@/components/Dashboard/SalesAnalyticsChart';
 import { SalesByCountries } from '@/components/Dashboard/SalesByCountries';
-import { FleetView } from '@/components/Dashboard/FleetView';
-import { BookingsView } from '@/components/Dashboard/BookingsView';
-import { LeadsView } from '@/components/Dashboard/LeadsView';
-import { SuperAdminView } from '@/components/Dashboard/SuperAdminView';
-import { SettingsView } from '@/components/Dashboard/SettingsView';
 
 export default function AdminDashboardPage() {
-  const {
-    activeTab,
-    vehicles,
-    setVehicles,
-    transactions,
-    openAddVehicle,
-  } = useDashboard();
+  const { transactions } = useDashboard();
 
   const [timeframe, setTimeframe] = useState('7d');
   const [year, setYear] = useState('2023');
@@ -74,66 +63,6 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     fetchDashboardStats(timeframe, year);
   }, [fetchDashboardStats, timeframe, year]);
-
-  // Distinct view per active sidebar tab
-  if (activeTab === 'Fleet Inventory') {
-    return (
-      <FleetView
-        vehicles={vehicles}
-        onOpenAddModal={openAddVehicle}
-        onDeleteVehicle={(id) => setVehicles((prev) => prev.filter((c) => c.id !== id))}
-      />
-    );
-  }
-
-  if (activeTab === 'Bookings Manifest') {
-    return <BookingsView />;
-  }
-
-  if (activeTab === 'Leads & Inquiries') {
-    return <LeadsView />;
-  }
-
-  if (activeTab === 'Super Admin') {
-    return <SuperAdminView />;
-  }
-
-  if (activeTab === 'Settings') {
-    return <SettingsView />;
-  }
-
-  if (activeTab === 'Sales Analytics') {
-    return (
-      <div className="space-y-6">
-        <GreetingBar
-          timeframe={timeframe}
-          onTimeframeChange={(tf) => setTimeframe(tf)}
-          isRefreshing={isRefreshing}
-          onRefresh={() => fetchDashboardStats()}
-        />
-        <StatsOverview
-          weeklyEarning={dashboardData.weeklyEarning}
-          growthRate={dashboardData.growthRate}
-          totalSales={dashboardData.totalSales}
-          purchasedGoods={dashboardData.purchasedGoods}
-          isRefreshing={isRefreshing}
-          onRefresh={() => fetchDashboardStats()}
-        />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-          <div className="lg:col-span-8 h-full">
-            <SalesAnalyticsChart
-              data={dashboardData.chartData}
-              year={year}
-              onYearChange={(yr) => setYear(yr)}
-            />
-          </div>
-          <div className="lg:col-span-4 h-full">
-            <SalesByCountries />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // Default: Main Overview Dashboard (Figma)
   return (

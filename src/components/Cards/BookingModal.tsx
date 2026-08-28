@@ -186,7 +186,7 @@ export function BookingModal({
               {/* Car Banner */}
               <div className="flex items-center gap-4 p-3.5 bg-gray-50 rounded-2xl border border-gray-100">
                 <div className="relative w-20 h-16 rounded-xl overflow-hidden bg-gray-200 shrink-0">
-                  <Image src={car.image} alt={car.name} fill className="object-cover" />
+                  <Image src={car.image} alt={car.name} fill sizes="80px" className="object-cover" />
                 </div>
                 <div>
                   <h4 className="font-rubik font-bold text-base text-[#131825]">{car.name}</h4>

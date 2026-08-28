@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/admin',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
