@@ -2,7 +2,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { AuthModal } from '@/components/Cards/AuthModal';
 
 interface NavItem {
   label: string;
@@ -21,29 +20,8 @@ const NAV_ITEMS: NavItem[] = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [authModalState, setAuthModalState] = useState<{
-    isOpen: boolean;
-    mode: 'login' | 'register';
-  }>({
-    isOpen: false,
-    mode: 'login',
-  });
-  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
-
   const sidebarRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Sync current user from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('bestauto_current_user');
-      if (savedUser) {
-        setCurrentUser(JSON.parse(savedUser));
-      }
-    } catch {
-      // Ignore
-    }
-  }, []);
 
   // Clear timeout on unmount
   useEffect(() => () => {
@@ -73,15 +51,6 @@ export function Navbar() {
       document.body.style.overflow = 'auto';
     };
   }, [isOpen]);
-
-  const openAuth = (mode: 'login' | 'register') => {
-    setAuthModalState({ isOpen: true, mode });
-    setIsOpen(false);
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-  };
 
   return (
     <>
@@ -117,48 +86,20 @@ export function Navbar() {
             {/* Vertical Separator */}
             <div className="h-5 w-[1px] bg-[#9ca3af]/60" aria-hidden="true" />
 
-            {/* Auth Actions */}
+            {/* Auth Actions matching Figma design */}
             <div className="flex items-center gap-4 xl:gap-5 font-jakarta">
-              {currentUser ? (
-                <div className="flex items-center gap-3">
-                  <Link
-                    href="/admin"
-                    className="bg-[#131825] text-white px-3.5 py-2 rounded-[4px] text-xs font-bold hover:bg-black transition-all shadow-xs"
-                  >
-                    Dashboard
-                  </Link>
-                  <div className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-full border border-black/5">
-                    <div className="w-6 h-6 rounded-full bg-[#131825] text-white flex items-center justify-center text-xs font-bold">
-                      {currentUser.name.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-xs font-semibold text-[#131825]">
-                      {currentUser.name}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="text-xs font-semibold text-red-600 hover:text-red-800 cursor-pointer"
-                  >
-                    Log Out
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <Link
-                    href="/register"
-                    className="text-sm xl:text-base font-medium text-[#4b5563] hover:text-[#131825] transition-colors"
-                  >
-                    Register
-                  </Link>
-                  <Link
-                    href="/login"
-                    className="bg-white text-[#131825] px-6 py-2.5 rounded-[4px] font-semibold text-sm xl:text-base shadow-sm hover:shadow-md hover:bg-gray-50 active:scale-95 transition-all duration-200 border border-black/5"
-                  >
-                    Log In
-                  </Link>
-                </>
-              )}
+              <Link
+                href="/register"
+                className="text-sm xl:text-base font-medium text-[#4b5563] hover:text-[#131825] transition-colors"
+              >
+                Register
+              </Link>
+              <Link
+                href="/login"
+                className="bg-white text-[#131825] px-6 py-2.5 rounded-[4px] font-semibold text-sm xl:text-base shadow-sm hover:shadow-md hover:bg-gray-50 active:scale-95 transition-all duration-200 border border-black/5"
+              >
+                Log In
+              </Link>
             </div>
           </nav>
 
@@ -239,70 +180,27 @@ export function Navbar() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="/admin"
-                onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-semibold text-[#131825] hover:bg-white/40 transition-colors flex items-center justify-between"
-              >
-                <span>Operations Dashboard</span>
-                <span className="text-[10px] bg-[#131825] text-white px-1.5 py-0.5 rounded font-bold">
-                  Admin
-                </span>
-              </Link>
-            </li>
           </ul>
         </div>
 
-        {/* Bottom Actions */}
-        <div className="pt-6 border-t border-black/10 space-y-3">
-          {currentUser ? (
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 bg-white/80 p-2.5 rounded-xl border border-black/5">
-                <div className="w-8 h-8 rounded-full bg-[#131825] text-white flex items-center justify-center text-xs font-bold">
-                  {currentUser.name.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-[#131825]">{currentUser.name}</p>
-                  <p className="text-[10px] text-gray-500">{currentUser.email}</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="w-full text-center text-xs font-bold text-red-600 hover:bg-red-50 py-2 rounded-lg transition-colors cursor-pointer"
-              >
-                Log Out
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <Link
-                href="/register"
-                onClick={() => setIsOpen(false)}
-                className="block text-center w-full py-2.5 rounded-[4px] font-semibold text-sm text-[#131825] hover:bg-white/40 transition-colors"
-              >
-                Register
-              </Link>
-              <Link
-                href="/login"
-                onClick={() => setIsOpen(false)}
-                className="block text-center w-full bg-white text-[#131825] py-2.5 rounded-[4px] font-bold text-sm shadow-sm hover:shadow hover:bg-gray-50 active:scale-95 transition-all border border-black/5"
-              >
-                Log In
-              </Link>
-            </div>
-          )}
+        {/* Bottom Actions matching Figma design */}
+        <div className="pt-6 border-t border-black/10 space-y-2">
+          <Link
+            href="/register"
+            onClick={() => setIsOpen(false)}
+            className="block text-center w-full py-2.5 rounded-[4px] font-semibold text-sm text-[#131825] hover:bg-white/40 transition-colors"
+          >
+            Register
+          </Link>
+          <Link
+            href="/login"
+            onClick={() => setIsOpen(false)}
+            className="block text-center w-full bg-white text-[#131825] py-2.5 rounded-[4px] font-bold text-sm shadow-sm hover:shadow hover:bg-gray-50 active:scale-95 transition-all border border-black/5"
+          >
+            Log In
+          </Link>
         </div>
       </aside>
-
-      {/* Auth Modal */}
-      <AuthModal
-        isOpen={authModalState.isOpen}
-        initialMode={authModalState.mode}
-        onClose={() => setAuthModalState({ isOpen: false, mode: 'login' })}
-        onSuccess={(user) => setCurrentUser(user)}
-      />
     </>
   );
 }

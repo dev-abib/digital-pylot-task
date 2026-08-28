@@ -3,14 +3,13 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   Search,
   Plus,
   Monitor,
   Maximize2,
-  Mail,
   Bell,
-  Settings,
   ChevronDown,
   Cloud,
   ArrowUpRight,
@@ -34,6 +33,7 @@ export function Header({
   onSearchChange,
   notificationCount = 1,
 }: HeaderProps) {
+  const router = useRouter();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(false);
@@ -234,6 +234,18 @@ export function Header({
                 <span>Live Customer Site</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-gray-400" />
               </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    localStorage.removeItem('bestauto_current_user');
+                  } catch {}
+                  router.push('/login');
+                }}
+                className="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors font-semibold cursor-pointer border-t border-gray-100 mt-1"
+              >
+                Sign Out
+              </button>
             </div>
           )}
         </div>
